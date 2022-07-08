@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from 'bizcharts'
 import dayjs from 'dayjs'
-import { groupBy, sumBy } from 'lodash'
+import { groupBy, orderBy, sumBy } from 'lodash'
 import { useState } from 'react'
 import Rank from '../components/Rank'
 import { House } from '../types'
@@ -31,17 +31,22 @@ const scale = {
 
 export default function RegionCard({ houses, className }: RegionCardProps) {
   const regionsOfData = groupBy(houses, 'region')
-  const regions = Object.keys(regionsOfData)
+  const regions = orderBy(
+    Object.entries(regionsOfData),
+    [
+      ([_, houses]) => sumBy(houses, 'quantity'),
+      ([_, houses]) => houses.length,
+    ],
+    ['desc', 'desc']
+  ).map(([key]) => key)
 
   const [tab, setTab] = useState('全部')
-  houses = regions.includes(tab) ? regionsOfData[tab] : houses
-  const tabs = [{ key: '全部', tab: '全部' }].concat(
-    regions.map((tab) => ({ key: tab, tab }))
-  )
+  const tabs = ['全部'].concat(regions).map((tab) => ({ key: tab, tab }))
+  const _houses = regions.includes(tab) ? regionsOfData[tab] : houses
 
   const months = groupBy(
-    houses,
-    (item) => dayjs(item.endsAt).month() + 1 + '月'
+    _houses,
+    (item) => dayjs(item.startAt).month() + 1 + '月'
   )
 
   const data = Object.entries(months).map(([key, houses]) => ({
@@ -90,7 +95,7 @@ export default function RegionCard({ houses, className }: RegionCardProps) {
         </div>
         <Rank
           className="w-1/5"
-          dataSource={houses.map((item, index) => ({
+          dataSource={_houses.map((item, index) => ({
             key: item.name + index,
             name: item.name,
             value: item.quantity,
