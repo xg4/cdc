@@ -1,8 +1,7 @@
 import { Button, Card, Divider, Form, Input, Table } from 'antd'
 import dayjs from 'dayjs'
-import { join, map, pipe, sortBy, uniqBy } from 'lodash/fp'
-import { useMemo } from 'react'
-import { useUpdate } from 'react-use'
+import { sortBy, uniqBy } from 'lodash'
+import { useMemo, useState } from 'react'
 import { House } from '../types'
 import DatePicker from './DatePicker'
 
@@ -11,43 +10,64 @@ interface TableCardProps {
   className?: string
 }
 
+function FilterForm({ onFilter }: { onFilter: (values: any) => void }) {
+  const [form] = Form.useForm()
+  return (
+    <Form form={form} layout="inline" onFinish={onFilter}>
+      <Form.Item label="项目名称" name="name">
+        <Input placeholder="请输入项目名称" />
+      </Form.Item>
+      <Form.Item label="登记时间" name="date">
+        <DatePicker.RangePicker
+          showTime={{ format: 'HH:mm' }}
+          format="YYYY-MM-DD HH:mm"
+        />
+      </Form.Item>
+      <Form.Item>
+        <Button htmlType="submit" type="primary">
+          搜索
+        </Button>
+      </Form.Item>
+    </Form>
+  )
+}
+
 export default function TableCard({
-  dataSource: _data,
+  dataSource: houses,
   className,
 }: TableCardProps) {
-  const [form] = Form.useForm()
+  const [dataSource, setDataSource] = useState(houses)
 
-  const update = useUpdate()
+  const onFilter = (values: any) => {
+    const { name, date } = values
 
-  const dataSource = _data
-    .filter((i) => i.name.includes(form.getFieldValue('name') ?? ''))
-    .filter((i) => {
-      const [startAt, endsAt] = form.getFieldValue('date') ?? []
-      if (startAt && endsAt) {
-        return startAt.diff(i.startAt) <= 0 && endsAt.diff(i.endsAt) >= 0
-      }
-      if (startAt) {
-        return startAt.diff(i.startAt) <= 0
-      }
-      if (endsAt) {
-        return endsAt.diff(i.endsAt) >= 0
-      }
-      return true
-    })
-  const ids = pipe(sortBy('id'), map('id'), join(','))(dataSource)
+    let draft = houses
+    if (name) {
+      draft = draft.filter((house) => house.name.includes(name))
+    }
+    if (date) {
+      const [startAt, endsAt] = date
+      draft = draft.filter(
+        (house) =>
+          startAt.diff(house.startAt) <= 0 && endsAt.diff(house.endsAt) >= 0
+      )
+    }
+    setDataSource(draft)
+  }
+
+  const ids = sortBy(dataSource, 'id')
+    .map((i) => i.id)
+    .join(',')
 
   const columns = useMemo(
     () => [
       {
         title: '区域',
         dataIndex: 'region',
-        filters: pipe(
-          uniqBy('region'),
-          map((item: House) => ({
-            text: item.region,
-            value: item.region,
-          }))
-        )(dataSource),
+        filters: uniqBy(dataSource, 'region').map((item: House) => ({
+          text: item.region,
+          value: item.region,
+        })),
         onFilter: (value: any, record: House) => record.region.includes(value),
         filterSearch: true,
       },
@@ -85,13 +105,10 @@ export default function TableCard({
       {
         title: '报名状态',
         dataIndex: 'status',
-        filters: pipe(
-          uniqBy('status'),
-          map((item: House) => ({
-            text: item.status,
-            value: item.status,
-          }))
-        )(dataSource),
+        filters: uniqBy(dataSource, 'status').map((item: House) => ({
+          text: item.status,
+          value: item.status,
+        })),
         onFilter: (value: any, record: House) => record.status.includes(value),
         filterSearch: true,
       },
@@ -100,22 +117,7 @@ export default function TableCard({
   )
   return (
     <Card className={className}>
-      <Form form={form} layout="inline" onFinish={update}>
-        <Form.Item label="项目名称" name="name">
-          <Input placeholder="请输入项目名称" />
-        </Form.Item>
-        <Form.Item label="登记时间" name="date">
-          <DatePicker.RangePicker
-            showTime={{ format: 'HH:mm' }}
-            format="YYYY-MM-DD HH:mm"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" type="primary">
-            搜索
-          </Button>
-        </Form.Item>
-      </Form>
+      <FilterForm onFilter={onFilter} />
       <Divider />
       <Table
         rowKey="uuid"
