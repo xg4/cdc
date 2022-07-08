@@ -1,12 +1,14 @@
 import { Col, Row } from 'antd'
 import { orderBy } from 'lodash'
 import { GetServerSideProps } from 'next'
+import Head from 'next/head'
+import { useQuery } from 'react-query'
 import { TableCard } from '../components'
 import ChartCard from '../components/ChartCard'
 import DiffCard from '../components/DiffCard'
 import Layout from '../components/Layout'
 import useHouse from '../hooks/useHouse'
-import { getHouses } from '../services'
+import { getAllHouses, getHouses } from '../services'
 import { House } from '../types'
 import { NextPageWithLayout } from './_app'
 
@@ -23,7 +25,11 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   }
 }
 
-const Home: NextPageWithLayout<{ houses: House[] }> = ({ houses }) => {
+const Home: NextPageWithLayout<{ houses: House[] }> = ({ houses: _houses }) => {
+  const { data: houses = [] } = useQuery(getAllHouses.name, getAllHouses, {
+    initialData: _houses,
+  })
+
   const {
     currentMonthData,
     currentQuarterData,
@@ -71,7 +77,10 @@ const Home: NextPageWithLayout<{ houses: House[] }> = ({ houses }) => {
   ]
 
   return (
-    <main>
+    <>
+      <Head>
+        <title>成都市房源信息</title>
+      </Head>
       <Row gutter={16} className="my-5 px-5">
         {diffList.map((item) => {
           return (
@@ -89,7 +98,7 @@ const Home: NextPageWithLayout<{ houses: House[] }> = ({ houses }) => {
       ></ChartCard>
 
       <TableCard className="mx-5" dataSource={dataSource}></TableCard>
-    </main>
+    </>
   )
 }
 
