@@ -16,11 +16,3 @@ export type House = {
   freeze2Date: string | null
   qualificationDate: string | null
 }
-
-export type User = {
-  id: number
-  createdAt: string
-  updatedAt: string
-  username: string
-  email: string | null
-}
