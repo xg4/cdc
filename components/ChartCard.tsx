@@ -15,17 +15,17 @@ const tabList = [
   },
 ]
 
-interface HomeCardProps {
+interface ChartCardProps {
   regionOfData: Dictionary<House[]>
   monthOfData: Dictionary<House[]>
   className?: string
 }
 
-export default function HomeCard({
+export default function ChartCard({
   monthOfData,
   regionOfData,
   className,
-}: HomeCardProps) {
+}: ChartCardProps) {
   const [tabKey, setTabKey] = useState('房源数')
   return (
     <Card
