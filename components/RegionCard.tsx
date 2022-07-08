@@ -1,0 +1,102 @@
+import { Card } from 'antd'
+import {
+  Chart,
+  DonutChart,
+  Interaction,
+  Interval,
+  Line,
+  Point,
+  Tooltip,
+} from 'bizcharts'
+import dayjs from 'dayjs'
+import { groupBy, sumBy } from 'lodash'
+import { useState } from 'react'
+import Rank from '../components/Rank'
+import { House } from '../types'
+
+interface RegionCardProps {
+  className?: string
+  houses: House[]
+}
+
+const colors = ['#6394f9', '#62daaa']
+const scale = {
+  number: {
+    alias: '房源数',
+  },
+  length: {
+    alias: '楼盘数',
+  },
+}
+
+export default function RegionCard({ houses, className }: RegionCardProps) {
+  const regionsOfData = groupBy(houses, 'region')
+  const regions = Object.keys(regionsOfData)
+
+  const [tab, setTab] = useState('全部')
+  houses = regions.includes(tab) ? regionsOfData[tab] : houses
+  const tabs = [{ key: '全部', tab: '全部' }].concat(
+    regions.map((tab) => ({ key: tab, tab }))
+  )
+
+  const months = groupBy(
+    houses,
+    (item) => dayjs(item.endsAt).month() + 1 + '月'
+  )
+
+  const data = Object.entries(months).map(([key, houses]) => ({
+    month: key,
+    length: houses.length,
+    number: sumBy(houses, 'quantity'),
+  }))
+
+  return (
+    <Card
+      tabList={tabs}
+      activeTabKey={tab}
+      onTabChange={setTab}
+      className={className}
+    >
+      <div className="flex h-80 justify-between">
+        <div className="w-1/2">
+          <Chart scale={scale} autoFit data={data}>
+            <Tooltip shared />
+            <Interval position="month*number" color={colors[0]} />
+            <Line
+              position="month*length"
+              color={colors[1]}
+              size={3}
+              shape="smooth"
+            />
+            <Point
+              position="month*length"
+              color={colors[1]}
+              size={3}
+              shape="circle"
+            />
+            <Interaction type="active-region" />
+          </Chart>
+        </div>
+        <div className="w-1/4">
+          <DonutChart
+            data={data}
+            autoFit
+            radius={0.8}
+            padding="auto"
+            angleField="number"
+            colorField="month"
+            pieStyle={{ stroke: 'white', lineWidth: 5 }}
+          />
+        </div>
+        <Rank
+          className="w-1/5"
+          dataSource={houses.map((item, index) => ({
+            key: item.name + index,
+            name: item.name,
+            value: item.quantity,
+          }))}
+        ></Rank>
+      </div>
+    </Card>
+  )
+}
