@@ -4,8 +4,6 @@ import zhCN from 'antd/lib/locale/zh_CN'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
-import timezone from 'dayjs/plugin/timezone'
-import utc from 'dayjs/plugin/utc'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import weekYear from 'dayjs/plugin/weekYear'
 import { noop } from 'lodash'
@@ -21,7 +19,7 @@ import {
 import '../styles/tailwind.css'
 
 dayjs.locale('zh-cn')
-const plugins = [quarterOfYear, weekOfYear, weekYear, utc, timezone]
+const plugins = [quarterOfYear, weekOfYear, weekYear]
 plugins.forEach((plugin) => dayjs.extend(plugin))
 
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
