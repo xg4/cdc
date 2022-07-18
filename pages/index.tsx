@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd'
 import { orderBy } from 'lodash'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useQuery } from 'react-query'
 import { TableCard } from '../components'
@@ -12,11 +12,7 @@ import { getAllHouses, getHouses } from '../services'
 import { House } from '../types'
 import { NextPageWithLayout } from './_app'
 
-export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-  )
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const houses = await getHouses()
   return {
     props: {
