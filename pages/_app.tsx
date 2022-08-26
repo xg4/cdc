@@ -1,3 +1,8 @@
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import { ConfigProvider } from 'antd'
 import 'antd/dist/antd.min.css'
 import zhCN from 'antd/lib/locale/zh_CN'
@@ -10,12 +15,6 @@ import { noop } from 'lodash'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import { ReactElement, ReactNode, useState } from 'react'
-import {
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-  setLogger,
-} from 'react-query'
 import '../styles/tailwind.css'
 
 dayjs.locale('zh-cn')
@@ -30,12 +29,6 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-setLogger({
-  log: noop,
-  warn: noop,
-  error: noop,
-})
-
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const [queryClient] = useState(
     () =>
@@ -45,6 +38,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             refetchOnWindowFocus: false,
             retry: false,
           },
+        },
+        logger: {
+          error: noop,
+          warn: noop,
+          log: noop,
         },
       })
   )

@@ -1,8 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
 import { orderBy } from 'lodash'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
-import { useQuery } from 'react-query'
 import { TableCard } from '../components'
 import ChartCard from '../components/ChartCard'
 import DiffCard from '../components/DiffCard'
@@ -22,7 +22,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 const Home: NextPageWithLayout<{ houses: House[] }> = ({ houses: _houses }) => {
-  const { data: houses = [] } = useQuery(getAllHouses.name, getAllHouses, {
+  const { data: houses = [] } = useQuery(['getAllHouses'], getAllHouses, {
     initialData: _houses,
   })
 

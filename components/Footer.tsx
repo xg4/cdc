@@ -1,11 +1,11 @@
 import { CloudSyncOutlined, GithubOutlined } from '@ant-design/icons'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, notification } from 'antd'
-import { useMutation, useQuery } from 'react-query'
 import pkg from '../package.json'
 import { getRequestCount, refreshHouses } from '../services'
 
 export default function Nav() {
-  const { data, isLoading } = useQuery(getRequestCount.name, getRequestCount)
+  const { data, isLoading } = useQuery(['getRequestCount'], getRequestCount)
 
   const { mutate, isLoading: requestLoading } = useMutation(refreshHouses, {
     onSuccess() {
