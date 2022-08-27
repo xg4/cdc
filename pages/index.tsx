@@ -1,3 +1,4 @@
+import { House } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
 import { orderBy } from 'lodash'
@@ -9,7 +10,6 @@ import DiffCard from '../components/DiffCard'
 import Layout from '../components/Layout'
 import useHouse from '../hooks/useHouse'
 import { getAllHouses, getHouses } from '../services'
-import { House } from '../types'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {

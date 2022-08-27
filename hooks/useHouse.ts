@@ -1,7 +1,7 @@
+import { House } from '@prisma/client'
 import dayjs from 'dayjs'
 import { groupBy } from 'lodash'
 import { useMemo } from 'react'
-import { House } from '../types'
 
 export default function useHouse(houses: House[]) {
   const data = houses

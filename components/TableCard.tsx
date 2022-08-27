@@ -1,8 +1,8 @@
+import { House } from '@prisma/client'
 import { Button, Card, Divider, Form, Input, Table } from 'antd'
 import dayjs from 'dayjs'
 import { sortBy, uniqBy } from 'lodash'
 import { useMemo, useState } from 'react'
-import { House } from '../types'
 import DatePicker from './DatePicker'
 
 interface TableCardProps {

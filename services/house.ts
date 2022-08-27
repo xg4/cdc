@@ -1,5 +1,5 @@
+import { House } from '@prisma/client'
 import { request } from '../helpers'
-import { House } from '../types'
 
 export function getHouses(): Promise<House[]> {
   return request.get('/houses/latest')

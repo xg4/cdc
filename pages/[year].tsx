@@ -1,3 +1,4 @@
+import { House } from '@prisma/client'
 import { Empty } from 'antd'
 import { orderBy } from 'lodash'
 import { GetStaticPaths, GetStaticProps } from 'next'
@@ -8,7 +9,6 @@ import { RegionCard, Summary, TableCard } from '../components'
 import Layout from '../components/Layout'
 import { HOUSE_YEARS } from '../constants'
 import { getHousesByYear } from '../services'
-import { House } from '../types'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticPaths: GetStaticPaths = async () => {

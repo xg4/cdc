@@ -1,7 +1,7 @@
+import { House } from '@prisma/client'
 import { Chart, LineAdvance } from 'bizcharts'
 import { Dictionary, orderBy, sumBy } from 'lodash'
 import Rank from './Rank'
-import { House } from '../types'
 
 interface MonthChartProps {
   monthOfData: Dictionary<House[]>

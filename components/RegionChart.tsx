@@ -1,6 +1,6 @@
+import { House } from '@prisma/client'
 import { Chart, Interaction, Interval, Tooltip } from 'bizcharts'
 import { Dictionary, orderBy, sumBy } from 'lodash'
-import { House } from '../types'
 
 interface RegionChartProps {
   regionOfData: Dictionary<House[]>

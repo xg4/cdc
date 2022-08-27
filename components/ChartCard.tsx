@@ -1,7 +1,7 @@
+import { House } from '@prisma/client'
 import { Card, Divider } from 'antd'
 import { Dictionary } from 'lodash'
 import { useState } from 'react'
-import { House } from '../types'
 import { MonthChart, RegionChart } from './'
 
 const tabList = [

@@ -1,7 +1,7 @@
+import { House } from '@prisma/client'
 import { Card } from 'antd'
 import { Chart, Interaction, Interval, Line, Point, Tooltip } from 'bizcharts'
 import { groupBy, orderBy, sumBy } from 'lodash'
-import { House } from '../types'
 
 const colors = ['#6394f9', '#62daaa']
 const scale = {

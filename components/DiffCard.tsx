@@ -1,6 +1,6 @@
+import { House } from '@prisma/client'
 import { Card } from 'antd'
 import { sumBy } from 'lodash'
-import { House } from '../types'
 
 interface DiffCardProps {
   title: string

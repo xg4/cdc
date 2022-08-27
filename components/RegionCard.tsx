@@ -1,3 +1,4 @@
+import { House } from '@prisma/client'
 import { Card } from 'antd'
 import {
   Chart,
@@ -12,7 +13,6 @@ import dayjs from 'dayjs'
 import { groupBy, orderBy, sumBy } from 'lodash'
 import { useState } from 'react'
 import Rank from '../components/Rank'
-import { House } from '../types'
 
 interface RegionCardProps {
   className?: string
