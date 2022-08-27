@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import { SHA256 } from 'crypto-js'
 import { isInteger, toString } from 'lodash'
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -38,32 +38,23 @@ export default async function handler(
     return
   }
 
-  async function saveOrUpdate(
-    house: Prisma.HouseCreateInput | Prisma.HouseCreateInput[]
-  ) {
-    if (Array.isArray(house)) {
-      for (const item of house) {
-        await saveOrUpdate(item)
-      }
-      return
-    }
-    await prisma.house.upsert({
-      where: {
-        uuid: house.uuid,
+  await prisma.$transaction([
+    prisma.request.create({
+      data: {
+        page,
+        hash,
       },
-      update: house,
-      create: house,
-    })
-  }
-
-  await saveOrUpdate(houses)
-
-  await prisma.request.create({
-    data: {
-      page,
-      hash,
-    },
-  })
+    }),
+    ...houses.map((house) =>
+      prisma.house.upsert({
+        where: {
+          uuid: house.uuid,
+        },
+        update: house,
+        create: house,
+      })
+    ),
+  ])
 
   res.status(201).json('更新成功')
   await prisma.$disconnect()
