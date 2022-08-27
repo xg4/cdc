@@ -1,6 +1,7 @@
 import { CloudSyncOutlined, GithubOutlined } from '@ant-design/icons'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, notification } from 'antd'
+import { ary } from 'lodash'
 import pkg from '../package.json'
 import { getRequestCount, refreshHouses } from '../services'
 
@@ -8,9 +9,9 @@ export default function Nav() {
   const { data, isLoading } = useQuery(['getRequestCount'], getRequestCount)
 
   const { mutate, isLoading: requestLoading } = useMutation(refreshHouses, {
-    onSuccess() {
+    onSuccess(message) {
       notification.success({
-        message: '已加入更新队列，请稍后查看',
+        message,
       })
     },
   })
@@ -20,7 +21,7 @@ export default function Nav() {
         {!isLoading && <div>累计查询：{data}次</div>}
         <Button
           loading={requestLoading}
-          onClick={() => mutate()}
+          onClick={ary(mutate, 0)}
           type="link"
           icon={<CloudSyncOutlined className="text-xl text-gray-700" />}
         ></Button>

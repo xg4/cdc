@@ -4,7 +4,7 @@ import { HOUSE_YEARS } from '../constants'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const tabs = [{ name: '首页', path: '/' }].concat(
-    HOUSE_YEARS.reverse().map((year) => ({
+    HOUSE_YEARS.map((year) => ({
       name: `${year}年`,
       path: `/${year}`,
     }))

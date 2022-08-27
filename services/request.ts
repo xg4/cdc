@@ -4,6 +4,6 @@ export function getRequestCount(): Promise<number> {
   return request.get('/requests/count')
 }
 
-export function refreshHouses() {
-  return request.get('/requests')
+export function refreshHouses(page = 1): Promise<string> {
+  return request.post('/requests', { page })
 }

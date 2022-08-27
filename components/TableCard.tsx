@@ -55,8 +55,8 @@ export default function TableCard({
     setDataSource(draft)
   }
 
-  const ids = sortBy(dataSource, 'id')
-    .map((i) => i.id)
+  const ids = sortBy(dataSource, 'uuid')
+    .map((i) => i.uuid)
     .join(',')
 
   const columns = useMemo(

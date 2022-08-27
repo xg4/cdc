@@ -8,7 +8,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const page = +req.query.page!
+  const page = +req.body.page!
   if (!isInteger(page)) {
     res.status(400).json('参数错误')
     return
@@ -34,7 +34,7 @@ export default async function handler(
     },
   })
   if (saved) {
-    res.status(200).json('success')
+    res.status(200).json('更新成功')
     return
   }
 
@@ -65,6 +65,6 @@ export default async function handler(
     },
   })
 
-  res.status(201).json('success')
+  res.status(201).json('更新成功')
   await prisma.$disconnect()
 }
