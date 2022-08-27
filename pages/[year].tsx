@@ -6,13 +6,13 @@ import { useRouter } from 'next/router'
 import { ReactElement } from 'react'
 import { RegionCard, Summary, TableCard } from '../components'
 import Layout from '../components/Layout'
-import { getYears } from '../helpers'
+import { HOUSE_YEARS } from '../constants'
 import { getHousesByYear } from '../services'
 import { House } from '../types'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getYears().map((year) => {
+  const paths = HOUSE_YEARS.map((year) => {
     return {
       params: {
         year: year.toString(),
@@ -27,7 +27,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const year = Number(params!.year)
+  if (!params) {
+    return {
+      props: {
+        houses: [],
+      },
+    }
+  }
+
+  const year = Number(params.year)
   const houses = await getHousesByYear(year)
 
   return {

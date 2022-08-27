@@ -1,10 +1,10 @@
 import Footer from '../components/Footer'
 import Nav from '../components/Nav'
-import { getYears } from '../helpers'
+import { HOUSE_YEARS } from '../constants'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const tabs = [{ name: '首页', path: '/' }].concat(
-    getYears().map((year) => ({
+    HOUSE_YEARS.reverse().map((year) => ({
       name: `${year}年`,
       path: `/${year}`,
     }))
