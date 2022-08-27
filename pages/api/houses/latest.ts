@@ -7,11 +7,10 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const prisma = new PrismaClient()
-  const startAt = dayjs().subtract(6, 'month').toDate()
   const houses = await prisma.house.findMany({
     where: {
       startAt: {
-        gte: startAt,
+        gte: dayjs().subtract(6, 'month').toDate(),
       },
     },
   })
