@@ -10,7 +10,7 @@ export default async function handler(
   const houses = await prisma.house.findMany({
     where: {
       startAt: {
-        gte: dayjs().subtract(6, 'month').toDate(),
+        gte: dayjs().startOf('year').toDate(),
       },
     },
   })

@@ -66,7 +66,7 @@ const YearDetail: NextPageWithLayout<{ houses: House[] }> = (props) => {
         <>
           <RegionCard className="m-5" houses={houses}></RegionCard>
           <Summary className="mx-5 mb-5" houses={houses}></Summary>
-          <TableCard className="mx-5" dataSource={houses}></TableCard>
+          <TableCard className="mx-5" houses={houses}></TableCard>
         </>
       ) : (
         <div className="flex items-center justify-center py-10">

@@ -1,5 +1,5 @@
 import { House } from '@prisma/client'
-import { useQueries } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
 import { orderBy, uniqBy } from 'lodash'
 import { GetStaticProps } from 'next'
@@ -22,9 +22,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 }
 
-const Home: NextPageWithLayout<{ houses: House[] }> = ({
-  houses: latestHouses,
-}) => {
+const Home: NextPageWithLayout<{ houses: House[] }> = (props) => {
+  const { data: latestHouses } = useQuery(['getLatestHouses'], getHouses, {
+    initialData: props.houses,
+  })
   const result = useQueries({
     queries: HOUSE_YEARS.map((year) => {
       return {
