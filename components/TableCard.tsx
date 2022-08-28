@@ -1,12 +1,12 @@
 import { House } from '@prisma/client'
 import { Button, Card, Divider, Form, Input, Table } from 'antd'
 import dayjs from 'dayjs'
-import { sortBy, uniqBy } from 'lodash'
-import { useMemo, useState } from 'react'
+import { uniqBy } from 'lodash'
+import { useEffect, useMemo, useState } from 'react'
 import DatePicker from './DatePicker'
 
 interface TableCardProps {
-  dataSource: House[]
+  houses: House[]
   className?: string
 }
 
@@ -32,11 +32,12 @@ function FilterForm({ onFilter }: { onFilter: (values: any) => void }) {
   )
 }
 
-export default function TableCard({
-  dataSource: houses,
-  className,
-}: TableCardProps) {
+export default function TableCard({ houses, className }: TableCardProps) {
   const [dataSource, setDataSource] = useState(houses)
+
+  useEffect(() => {
+    setDataSource(houses)
+  }, [houses])
 
   const onFilter = (values: any) => {
     const { name, date } = values
@@ -55,9 +56,7 @@ export default function TableCard({
     setDataSource(draft)
   }
 
-  const ids = sortBy(dataSource, 'uuid')
-    .map((i) => i.uuid)
-    .join(',')
+  const ids = dataSource.map((i) => i.uuid).toString()
 
   const columns = useMemo(
     () => [

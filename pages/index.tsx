@@ -103,7 +103,7 @@ const Home: NextPageWithLayout<{ houses: House[] }> = ({
         regionOfData={regionOfData}
       ></ChartCard>
 
-      <TableCard className="mx-5" dataSource={dataSource}></TableCard>
+      <TableCard className="mx-5" houses={dataSource}></TableCard>
     </>
   )
 }

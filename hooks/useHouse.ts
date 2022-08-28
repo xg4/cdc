@@ -3,9 +3,8 @@ import dayjs from 'dayjs'
 import { groupBy } from 'lodash'
 import { useMemo } from 'react'
 
-export default function useHouse(houses: House[]) {
-  const data = houses
-  const key = data.map((item) => item.uuid).join()
+export default function useHouse(data: House[]) {
+  const key = data.map((item) => item.uuid).toString()
 
   return useMemo(() => {
     const yearOfData = groupBy(data, (item) => dayjs(item.startAt).get('year'))
