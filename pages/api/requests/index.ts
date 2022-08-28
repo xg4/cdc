@@ -27,9 +27,8 @@ export default async function handler(
   const hash = SHA256(values).toString()
 
   const prisma = new PrismaClient()
-  const saved = await prisma.request.findFirst({
+  const saved = await prisma.request.findUnique({
     where: {
-      page,
       hash,
     },
   })
