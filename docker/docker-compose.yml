@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  web-nextjs:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    image: web-nextjs
+    ports:
+      - '3003:3000'
