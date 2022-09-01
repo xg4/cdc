@@ -1,12 +1,10 @@
-import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { getHouses } from '../../../services/server'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const prisma = new PrismaClient()
-  const houses = await prisma.house.findMany()
+  const houses = await getHouses()
   res.status(200).json(houses)
-  await prisma.$disconnect()
 }

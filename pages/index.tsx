@@ -1,41 +1,31 @@
 import { House } from '@prisma/client'
-import { useQueries, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
-import { orderBy, uniqBy } from 'lodash'
+import { orderBy } from 'lodash'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { TableCard } from '../components'
 import ChartCard from '../components/ChartCard'
 import DiffCard from '../components/DiffCard'
 import Layout from '../components/Layout'
-import { HOUSE_YEARS } from '../constants'
 import useHouse from '../hooks/useHouse'
-import { getHouses, getHousesByYear } from '../services'
+import { getHouses } from '../services'
+import { getLatestHouses } from '../services/server'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const houses = await getHouses()
+  const houses = await getLatestHouses()
   return {
     props: {
-      houses,
+      houses: JSON.parse(JSON.stringify(houses)),
     },
   }
 }
 
 const Home: NextPageWithLayout<{ houses: House[] }> = (props) => {
-  const { data: latestHouses } = useQuery(['getLatestHouses'], getHouses, {
+  const { data: houses } = useQuery(['getHouses'], getHouses, {
     initialData: props.houses,
   })
-  const result = useQueries({
-    queries: HOUSE_YEARS.map((year) => {
-      return {
-        queryKey: ['getHousesByYear', year],
-        queryFn: () => getHousesByYear(year),
-      }
-    }),
-  })
-  const allHouses = result.map((item) => item.data ?? []).flat()
-  const houses = uniqBy([...allHouses, ...latestHouses], 'uuid')
 
   const {
     currentMonthData,

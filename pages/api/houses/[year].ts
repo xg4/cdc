@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client'
 import dayjs from 'dayjs'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { getHousesByYear } from '../../../services/server'
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,16 +14,7 @@ export default async function handler(
     return
   }
 
-  const prisma = new PrismaClient()
-  const houses = await prisma.house.findMany({
-    where: {
-      startAt: {
-        gte: currentYear.startOf('year').toDate(),
-        lte: currentYear.endOf('year').toDate(),
-      },
-    },
-  })
+  const houses = await getHousesByYear(currentYear)
 
   res.status(200).json(houses)
-  await prisma.$disconnect()
 }

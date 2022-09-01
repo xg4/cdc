@@ -1,5 +1,6 @@
 import { House } from '@prisma/client'
 import { Empty } from 'antd'
+import dayjs from 'dayjs'
 import { orderBy } from 'lodash'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
@@ -8,7 +9,7 @@ import { ReactElement } from 'react'
 import { RegionCard, Summary, TableCard } from '../components'
 import Layout from '../components/Layout'
 import { HOUSE_YEARS } from '../constants'
-import { getHousesByYear } from '../services'
+import { getHousesByYear } from '../services/server'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -36,11 +37,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   const year = Number(params.year)
-  const houses = await getHousesByYear(year)
+  const houses = await getHousesByYear(dayjs().year(year))
 
   return {
     props: {
-      houses,
+      houses: JSON.parse(JSON.stringify(houses)),
     },
   }
 }
