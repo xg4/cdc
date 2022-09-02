@@ -1,5 +1,5 @@
 import { CloudSyncOutlined, GithubOutlined } from '@ant-design/icons'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Button, notification } from 'antd'
 import { ary } from 'lodash'
 import pkg from '../package.json'
@@ -7,12 +7,14 @@ import { getRequestCount, refreshHouses } from '../services'
 
 export default function Nav() {
   const { data, isLoading } = useQuery(['getRequestCount'], getRequestCount)
-
+  const queryClient = useQueryClient()
   const { mutate, isLoading: requestLoading } = useMutation(refreshHouses, {
     onSuccess(message) {
       notification.success({
         message,
       })
+      queryClient.refetchQueries(['getLatestHouses'])
+      queryClient.refetchQueries(['getRequestCount'])
     },
   })
   return (

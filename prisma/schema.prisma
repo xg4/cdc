@@ -11,28 +11,28 @@ model House {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  uuid              String   @id
+  uuid              String    @id
   region            String
   name              String
-  certificateNumber String   @map("certificate_number")
+  certificateNumber String    @map("certificate_number")
   // 预售范围
   range             String
   // 住房套数
   quantity          Int
   // 开发商咨询电话
-  phoneNumber       String   @map("phone_number")
+  phoneNumber       String    @map("phone_number")
   // 报名开始时间
-  startAt           DateTime @map("start_at")
+  startAt           DateTime  @map("start_at")
   // 报名结束时间
-  endsAt            DateTime @map("ends_at")
+  endsAt            DateTime  @map("ends_at")
   status            String
-
   // 名单外人员资格已释放时间
   freezeDate        DateTime? @map("freeze_date")
   // 名单内人员资格已释放时间
   freeze2Date       DateTime? @map("freeze2_date")
   // 预审码取得截止时间
   qualificationDate DateTime? @map("qualification_date")
+  hash              String    @unique
 
   @@index([region, startAt, status])
   @@map(name: "houses")

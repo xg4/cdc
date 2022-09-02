@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { load } from 'cheerio'
-import { head, isNil, omitBy } from 'lodash'
+import { SHA256 } from 'crypto-js'
+import { head } from 'lodash'
 import { getTzDate } from '../utils'
 
 function buildURL(url: string, params?: URLSearchParams) {
@@ -37,7 +38,7 @@ function filterData([
   freeze2Date,
   qualificationDate,
   status,
-]: string[]) {
+]: string[]): Prisma.HouseCreateInput {
   const house = {
     uuid,
     region,
@@ -53,7 +54,10 @@ function filterData([
     qualificationDate: qualificationDate ? getTzDate(qualificationDate) : null,
     status,
   }
-  return omitBy(house, isNil)
+  return {
+    ...house,
+    hash: SHA256(Object.values(house).toString()).toString(),
+  }
 }
 
 function parse(data: string) {
@@ -67,7 +71,7 @@ function parse(data: string) {
         tdList.push($(td).text())
       })
 
-    trList.push(tdList)
+    trList.push(tdList.map((t) => t.trim()))
   })
   return trList
 }
@@ -92,5 +96,5 @@ export async function pull(pageNo = 1) {
     throw new Error()
   }
 
-  return list.reverse().map(filterData) as Prisma.HouseCreateInput[]
+  return list.reverse().map(filterData)
 }
