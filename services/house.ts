@@ -2,7 +2,11 @@ import { House } from '@prisma/client'
 import { request } from '../helpers'
 
 export function getLatestHouses(): Promise<House[]> {
-  return request.get('/houses/latest')
+  return request.get('/houses/latest', {
+    params: {
+      date: process.env.buildDate,
+    },
+  })
 }
 
 export function getHouses(): Promise<House[]> {

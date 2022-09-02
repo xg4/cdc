@@ -1,11 +1,11 @@
 import dayjs from 'dayjs'
 import { prisma } from '../../helpers/prisma'
 
-export function getLatestHouses() {
+export function getLatestHouses(date: dayjs.Dayjs) {
   return prisma.house.findMany({
     where: {
-      startAt: {
-        gte: dayjs().startOf('year').toDate(),
+      updatedAt: {
+        gte: date.toDate(),
       },
     },
   })
