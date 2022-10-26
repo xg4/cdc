@@ -1,9 +1,8 @@
 import { SHA256 } from 'crypto-js'
 import { isInteger } from 'lodash'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { pull } from '../../../helpers'
-import { prisma } from '../../../helpers/prisma'
-import { saveHouse } from '../../../services/server'
+import { saveHouse } from '../../../server/services'
+import { prisma, pull } from '../../../server/utils'
 
 export default async function handler(
   req: NextApiRequest,

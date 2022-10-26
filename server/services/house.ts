@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import dayjs from 'dayjs'
-import { prisma } from '../../helpers/prisma'
+import { omit } from 'lodash'
+import { prisma } from '../utils'
 
 export async function saveHouse(house: Prisma.HouseCreateInput) {
   const saved = await prisma.house.findUnique({
@@ -21,7 +22,7 @@ export async function saveHouse(house: Prisma.HouseCreateInput) {
     where: {
       uuid: house.uuid,
     },
-    data: house,
+    data: omit(house, 'profile'),
   })
 }
 

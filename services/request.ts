@@ -1,4 +1,4 @@
-import { request } from '../helpers'
+import { request } from '../utils'
 
 export function getRequestCount(): Promise<number> {
   return request.get('/requests/count')

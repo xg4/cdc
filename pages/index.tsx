@@ -9,8 +9,8 @@ import ChartCard from '../components/ChartCard'
 import DiffCard from '../components/DiffCard'
 import Layout from '../components/Layout'
 import useHouse from '../hooks/useHouse'
+import { getHouses } from '../server/services'
 import { getLatestHouses } from '../services'
-import { getHouses } from '../services/server'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticProps: GetStaticProps = async () => {

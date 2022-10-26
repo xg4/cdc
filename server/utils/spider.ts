@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { load } from 'cheerio'
 import { head } from 'lodash'
-import { getTzDate } from '../utils'
+import { getTzDate } from './time'
 
 function buildURL(url: string, params?: URLSearchParams) {
   if (!params) {

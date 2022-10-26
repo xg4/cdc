@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getLatestHouses } from '../../../services/server'
+import { getLatestHouses } from '../../../server/services'
 
 export default async function handler(
   req: NextApiRequest,

@@ -9,7 +9,7 @@ import { ReactElement } from 'react'
 import { RegionCard, Summary, TableCard } from '../components'
 import Layout from '../components/Layout'
 import { HOUSE_YEARS } from '../constants'
-import { getHousesByYear } from '../services/server'
+import { getHousesByYear } from '../server/services'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticPaths: GetStaticPaths = async () => {

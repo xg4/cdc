@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getHouses } from '../../../services/server'
+import { getHouses } from '../../../server/services'
 
 export default async function handler(
   req: NextApiRequest,
