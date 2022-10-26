@@ -5,18 +5,23 @@ import { prisma } from '../../helpers/prisma'
 export async function saveHouse(house: Prisma.HouseCreateInput) {
   const saved = await prisma.house.findUnique({
     where: {
-      hash: house.hash,
+      uuid: house.uuid,
     },
   })
-  if (saved) {
+  if (!saved) {
+    const newHouse = await prisma.house.create({
+      data: house,
+    })
+    return newHouse
+  }
+  if (saved.status === house.status) {
     return saved
   }
-  return prisma.house.upsert({
+  return prisma.house.update({
     where: {
       uuid: house.uuid,
     },
-    update: house,
-    create: house,
+    data: house,
   })
 }
 

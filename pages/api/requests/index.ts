@@ -15,36 +15,34 @@ export default async function handler(
     return
   }
 
-  let houses
   try {
-    houses = await pull(page)
+    const houses = await pull(page)
+
+    const hash = SHA256(JSON.stringify(houses)).toString()
+
+    const saved = await prisma.request.findUnique({
+      where: {
+        hash,
+      },
+    })
+    if (saved) {
+      res.status(200).json('更新成功')
+      return
+    }
+
+    await Promise.all([
+      prisma.request.create({
+        data: {
+          page,
+          hash,
+        },
+      }),
+      ...houses.map(saveHouse),
+    ])
+
+    res.status(201).json('更新成功')
   } catch {
     res.status(400).json('请求错误')
     return
   }
-
-  const values = houses.map((i) => i.hash).toString()
-  const hash = SHA256(values).toString()
-
-  const saved = await prisma.request.findUnique({
-    where: {
-      hash,
-    },
-  })
-  if (saved) {
-    res.status(200).json('更新成功')
-    return
-  }
-
-  await Promise.all([
-    prisma.request.create({
-      data: {
-        page,
-        hash,
-      },
-    }),
-    ...houses.map(saveHouse),
-  ])
-
-  res.status(201).json('更新成功')
 }

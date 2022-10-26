@@ -11,31 +11,31 @@ model House {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  uuid              String    @id
-  region            String
-  name              String
-  certificateNumber String    @map("certificate_number")
-  // 预售范围
-  range             String
-  // 住房套数
-  quantity          Int
-  // 开发商咨询电话
-  phoneNumber       String    @map("phone_number")
-  // 报名开始时间
-  startAt           DateTime  @map("start_at")
-  // 报名结束时间
-  endsAt            DateTime  @map("ends_at")
-  status            String
-  // 名单外人员资格已释放时间
-  freezeDate        DateTime? @map("freeze_date")
-  // 名单内人员资格已释放时间
-  freeze2Date       DateTime? @map("freeze2_date")
-  // 预审码取得截止时间
-  qualificationDate DateTime? @map("qualification_date")
-  hash              String    @unique
+  uuid     String   @id
+  region   String
+  name     String
+  quantity Int // 住房套数
+  startAt  DateTime @map("start_at") // 报名开始时间
+  endsAt   DateTime @map("ends_at") // 报名结束时间
+  status   String
+  profile  Profile?
 
-  @@index([region, startAt, status])
+  @@index([region, startAt])
   @@map(name: "houses")
+}
+
+model Profile {
+  id                Int       @id @default(autoincrement())
+  detail            String // 预售范围
+  certificateNumber String    @map("certificate_number")
+  phoneNumber       String    @map("phone_number") // 开发商咨询电话
+  externalDate      DateTime? @map("external_date") // 名单外人员资格已释放时间
+  internalDate      DateTime? @map("internal_date") // 名单内人员资格已释放时间
+  qrCodeDate        DateTime? @map("qr_code_date") // 预审码取得截止时间
+  house             House     @relation(fields: [houseUuid], references: [uuid])
+  houseUuid         String    @unique
+
+  @@map(name: "profiles")
 }
 
 model Request {
@@ -44,7 +44,6 @@ model Request {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   page Int
-  // values hash
   hash String @unique
 
   @@map(name: "requests")

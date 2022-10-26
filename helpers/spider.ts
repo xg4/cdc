@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client'
 import { load } from 'cheerio'
-import { SHA256 } from 'crypto-js'
 import { head } from 'lodash'
 import { getTzDate } from '../utils'
 
@@ -29,34 +28,34 @@ function filterData([
   region,
   name,
   certificateNumber,
-  range,
+  detail,
   quantity,
   phoneNumber,
   startAt,
   endsAt,
-  freezeDate,
-  freeze2Date,
-  qualificationDate,
+  externalDate,
+  internalDate,
+  qrCodeDate,
   status,
 ]: string[]): Prisma.HouseCreateInput {
-  const house = {
+  return {
     uuid,
     region,
     name,
-    certificateNumber,
-    range,
     quantity: Number(quantity),
-    phoneNumber,
     startAt: getTzDate(startAt),
     endsAt: getTzDate(endsAt),
-    freezeDate: freezeDate ? getTzDate(freezeDate) : null,
-    freeze2Date: freeze2Date ? getTzDate(freeze2Date) : null,
-    qualificationDate: qualificationDate ? getTzDate(qualificationDate) : null,
     status,
-  }
-  return {
-    ...house,
-    hash: SHA256(Object.values(house).toString()).toString(),
+    profile: {
+      create: {
+        detail,
+        phoneNumber,
+        certificateNumber,
+        externalDate: externalDate ? getTzDate(externalDate) : null,
+        internalDate: internalDate ? getTzDate(internalDate) : null,
+        qrCodeDate: qrCodeDate ? getTzDate(qrCodeDate) : null,
+      },
+    },
   }
 }
 
