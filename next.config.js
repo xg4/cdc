@@ -2,9 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  output: 'standalone',
   env: {
     buildDate: new Date().toISOString(),
+  },
+  webpack(config) {
+    Object.assign(config.resolve.alias, {
+      dayjs: 'dayjs/esm',
+      lodash: 'lodash-es',
+    })
+    return config
   },
 }
 

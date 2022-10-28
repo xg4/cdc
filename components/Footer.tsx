@@ -1,7 +1,5 @@
-import { CloudSyncOutlined, GithubOutlined } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Button, notification } from 'antd'
-import { ary } from 'lodash'
+import { notification } from 'antd'
 import pkg from '../package.json'
 import { getRequestCount, refreshHouses } from '../services'
 
@@ -19,22 +17,8 @@ export default function Nav() {
   })
   return (
     <div className="bg-white py-5">
-      <div className="container mx-auto flex items-center justify-center space-x-4">
-        {!isLoading && <div>累计查询：{data}次</div>}
-        <Button
-          loading={requestLoading}
-          onClick={ary(mutate, 0)}
-          type="link"
-          icon={<CloudSyncOutlined className="text-xl text-gray-700" />}
-        ></Button>
-        <Button
-          href={pkg.homepage}
-          target="_blank"
-          type="link"
-          icon={
-            <GithubOutlined className="text-xl text-gray-700"></GithubOutlined>
-          }
-        ></Button>
+      <div className="container mx-auto text-center text-sm text-gray-500">
+        Version: {pkg.version}
       </div>
     </div>
   )

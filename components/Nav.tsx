@@ -1,3 +1,6 @@
+import { GithubOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
+import pkg from '../package.json'
 import NavLink from './NavLink'
 
 interface NavProps {
@@ -22,6 +25,13 @@ export default function Nav({ links }: NavProps) {
             </li>
           ))}
         </ul>
+
+        <Button
+          href={pkg.homepage}
+          target="_blank"
+          type="link"
+          icon={<GithubOutlined className="text-xl text-gray-700" />}
+        ></Button>
       </div>
     </nav>
   )
