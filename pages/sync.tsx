@@ -3,16 +3,13 @@ import { useState } from 'react'
 import { refreshHouses } from '../services'
 
 export default function Sync() {
-  const [page, setPage] = useState(300)
+  const [page, setPage] = useState(1)
   const { isLoading } = useQuery(
     ['refreshHouses', page],
     () => refreshHouses(page),
     {
-      onSettled() {
-        if (page <= 1) {
-          return
-        }
-        setPage((p) => p - 1)
+      onSuccess() {
+        setPage((p) => p + 1)
       },
     }
   )

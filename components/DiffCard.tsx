@@ -25,9 +25,12 @@ export default function DiffCard({
   const diffNum2 = currentNum2 - prevNum2
 
   return (
-    <Card title={title} extra={extra}>
+    <Card title={title} extra={<span className="text-xs">{extra}</span>}>
       <div className="flex justify-between">
-        <span>楼盘数：{currentNum}</span>
+        <span>
+          楼盘数：
+          {currentNum}
+        </span>
 
         {extra && (
           <span className={diffNum < 0 ? 'text-green-500' : 'text-red-500'}>

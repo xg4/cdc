@@ -19,7 +19,7 @@ export default function Nav({ links }: NavProps) {
                 className={({ isActive }) =>
                   classNames(
                     isActive ? 'text-blue-500' : 'text-gray-800',
-                    'no-underline'
+                    'text-sm no-underline'
                   )
                 }
                 href={link.path}

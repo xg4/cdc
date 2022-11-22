@@ -4,8 +4,6 @@ import { groupBy } from 'lodash'
 import { useMemo } from 'react'
 
 export default function useHouse(data: House[]) {
-  const key = data.map((item) => item.uuid).toString()
-
   return useMemo(() => {
     const yearOfData = groupBy(data, (item) => dayjs(item.startAt).get('year'))
     const monthOfData = groupBy(data, (item) =>
@@ -13,21 +11,21 @@ export default function useHouse(data: House[]) {
     )
     const quarterOfData = groupBy(data, (item) => {
       const d = dayjs(item.startAt)
-      return `${d.get('year')}-${d.quarter()}`
+      return [d.get('year'), d.quarter()].join('-')
     })
 
     const weekOfData = groupBy(data, (item) => {
       const d = dayjs(item.startAt)
-      return `${d.weekYear()}-${d.week()}`
+      return [d.weekYear(), d.week()].join('-')
     })
 
     const currentDate = dayjs()
 
     const prevWeek = currentDate.subtract(1, 'week')
     const currentWeekData =
-      weekOfData[`${currentDate.weekYear()}-${currentDate.week()}`] ?? []
+      weekOfData[[currentDate.weekYear(), currentDate.week()].join('-')] ?? []
     const prevWeekData =
-      weekOfData[`${prevWeek.weekYear()}-${prevWeek.week()}`] ?? []
+      weekOfData[[prevWeek.weekYear(), prevWeek.week()].join('-')] ?? []
 
     const prevYear = currentDate.subtract(1, 'year')
     const currentYearData = yearOfData[currentDate.format('YYYY')] ?? []
@@ -35,9 +33,13 @@ export default function useHouse(data: House[]) {
 
     const prevQuarter = currentDate.subtract(1, 'quarter')
     const currentQuarterData =
-      quarterOfData[`${currentDate.get('year')}-${currentDate.quarter()}`] ?? []
+      quarterOfData[
+        [currentDate.get('year'), currentDate.quarter()].join('-')
+      ] ?? []
     const prevQuarterData =
-      quarterOfData[`${prevQuarter.get('year')}-${prevQuarter.quarter()}`] ?? []
+      quarterOfData[
+        [prevQuarter.get('year'), prevQuarter.quarter()].join('-')
+      ] ?? []
 
     const prevMonth = currentDate.subtract(1, 'month')
     const currentMonthData = monthOfData[currentDate.format('YYYY-MM')] ?? []
@@ -58,5 +60,5 @@ export default function useHouse(data: House[]) {
       quarterOfData,
       regionOfData,
     }
-  }, [key])
+  }, [data])
 }
