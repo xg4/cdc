@@ -4,8 +4,8 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ConfigProvider } from 'antd'
-import 'antd/dist/antd.min.css'
-import zhCN from 'antd/lib/locale/zh_CN'
+import 'antd/dist/reset.css'
+import zhCN from 'antd/locale/zh_CN'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
@@ -48,7 +48,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   )
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
-    <ConfigProvider locale={zhCN}>
+    <ConfigProvider theme={{ token: { borderRadius: 0 } }} locale={zhCN}>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           {getLayout(<Component {...pageProps} />)}

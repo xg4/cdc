@@ -1,5 +1,6 @@
 import { GithubOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
+import classNames from 'classnames'
 import pkg from '../package.json'
 import NavLink from './NavLink'
 
@@ -16,7 +17,10 @@ export default function Nav({ links }: NavProps) {
             <li className="p-4" key={link.name}>
               <NavLink
                 className={({ isActive }) =>
-                  isActive ? 'text-blue-500' : 'text-gray-800'
+                  classNames(
+                    isActive ? 'text-blue-500' : 'text-gray-800',
+                    'no-underline'
+                  )
                 }
                 href={link.path}
               >
