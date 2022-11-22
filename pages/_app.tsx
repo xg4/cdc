@@ -48,7 +48,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   )
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
-    <ConfigProvider theme={{ token: { borderRadius: 0 } }} locale={zhCN}>
+    <ConfigProvider theme={{ token: { borderRadius: 2 } }} locale={zhCN}>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           {getLayout(<Component {...pageProps} />)}

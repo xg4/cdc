@@ -1,6 +1,10 @@
 import { House } from '@prisma/client'
 import { request } from '../utils'
 
+export function syncHouses(page = 1): Promise<House[]> {
+  return request.post('/houses/sync', { page })
+}
+
 export function getLatestHouses(): Promise<House[]> {
   return request.get('/houses/latest', {
     params: {

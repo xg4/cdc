@@ -35,7 +35,6 @@
     "bizcharts": "4.1.21",
     "cheerio": "1.0.0-rc.12",
     "classnames": "2.3.2",
-    "crypto-js": "4.1.1",
     "dayjs": "1.11.6",
     "lodash": "4.17.21",
     "lodash-es": "4.17.21",
@@ -45,7 +44,6 @@
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "0.4.2",
-    "@types/crypto-js": "4.1.1",
     "@types/lodash": "4.14.189",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",

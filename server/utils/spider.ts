@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { load } from 'cheerio'
 import { head } from 'lodash'
+import { md5 } from './md5'
 import { getTzDate } from './time'
 
 function buildURL(url: string, params?: URLSearchParams) {
@@ -22,22 +23,24 @@ function buildURL(url: string, params?: URLSearchParams) {
   return url
 }
 
-function filterData([
-  uuid,
-  ,
-  region,
-  name,
-  certificateNumber,
-  detail,
-  quantity,
-  phoneNumber,
-  startAt,
-  endsAt,
-  externalDate,
-  internalDate,
-  qrCodeDate,
-  status,
-]: string[]): Prisma.HouseCreateInput {
+function filterData(sourceData: string[]): Prisma.HouseCreateInput {
+  const hash = md5(sourceData.join())
+  const [
+    uuid,
+    ,
+    region,
+    name,
+    certificateNumber,
+    detail,
+    quantity,
+    phoneNumber,
+    startAt,
+    endsAt,
+    externalDate,
+    internalDate,
+    qrCodeDate,
+    status,
+  ] = sourceData
   return {
     uuid,
     region,
@@ -46,6 +49,7 @@ function filterData([
     startAt: getTzDate(startAt),
     endsAt: getTzDate(endsAt),
     status,
+    hash,
     profile: {
       create: {
         detail,
