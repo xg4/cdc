@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client'
 import dayjs from 'dayjs'
+import { omit } from 'lodash'
 import { prisma } from '../utils'
 
 export async function saveHouse(house: Prisma.HouseCreateInput) {
@@ -19,7 +20,7 @@ export async function saveHouse(house: Prisma.HouseCreateInput) {
       where: {
         uuid: house.uuid,
       },
-      data: house,
+      data: omit(house, 'profile'),
     })
   }
 }
