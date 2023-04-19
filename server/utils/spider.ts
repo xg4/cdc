@@ -1,27 +1,9 @@
 import { Prisma } from '@prisma/client'
 import { load } from 'cheerio'
 import { head } from 'lodash'
+import buildURL from './buildURL'
 import { md5 } from './md5'
 import { getTzDate } from './time'
-
-function buildURL(url: string, params?: URLSearchParams) {
-  if (!params) {
-    return url
-  }
-
-  const serializedParams = params.toString()
-
-  if (serializedParams) {
-    const hashMarkIndex = url.indexOf('#')
-    if (hashMarkIndex !== -1) {
-      url = url.slice(0, hashMarkIndex)
-    }
-
-    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams
-  }
-
-  return url
-}
 
 function filterData(sourceData: string[]): Prisma.HouseCreateInput {
   const hash = md5(sourceData.join())
@@ -63,32 +45,20 @@ function filterData(sourceData: string[]): Prisma.HouseCreateInput {
   }
 }
 
-function parse(data: string) {
-  const $ = load(data)
-  const trList: string[][] = []
-  $('#_projectInfo > tr').each((_, tr) => {
-    const tdList: string[] = []
-    $(tr)
-      .find('td')
-      .each((_, td) => {
-        tdList.push($(td).text())
-      })
-
-    trList.push(tdList.map((t) => t.trim()))
-  })
-  return trList
+function parseHtml(htmlStr: string) {
+  const $ = load(htmlStr)
+  return Array.from($('#_projectInfo > tr')).map(tr => Array.from($(tr).children()).map(td => $(td).text()))
 }
 
 export async function pull(pageNo = 1) {
-  const urlParams = new URLSearchParams({
-    pageNo: pageNo.toString(),
+  const url = buildURL(process.env.API_URL!, {
+    pageNo,
   })
-  const url = buildURL(process.env.API_URL!, urlParams)
   const result = await fetch(url, {
     method: 'POST',
-  }).then((res) => res.text())
+  }).then(res => res.text())
 
-  const list = parse(result)
+  const list = parseHtml(result)
   if (!list.length) {
     throw new Error()
   }
