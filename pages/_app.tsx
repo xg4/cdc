@@ -1,8 +1,5 @@
-import {
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Analytics } from '@vercel/analytics/react'
 import { ConfigProvider } from 'antd'
 import 'antd/dist/reset.css'
 import zhCN from 'antd/locale/zh_CN'
@@ -19,7 +16,7 @@ import '../styles/tailwind.css'
 
 dayjs.locale('zh-cn')
 const plugins = [quarterOfYear, weekOfYear, weekYear]
-plugins.forEach((plugin) => dayjs.extend(plugin))
+plugins.forEach(plugin => dayjs.extend(plugin))
 
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -44,17 +41,18 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           warn: noop,
           log: noop,
         },
-      })
+      }),
   )
-  const getLayout = Component.getLayout ?? ((page) => page)
+  const getLayout = Component.getLayout ?? (page => page)
   return (
-    <ConfigProvider theme={{ token: { borderRadius: 2 } }} locale={zhCN}>
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          {getLayout(<Component {...pageProps} />)}
-        </Hydrate>
-      </QueryClientProvider>
-    </ConfigProvider>
+    <>
+      <ConfigProvider theme={{ token: { borderRadius: 2 } }} locale={zhCN}>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>{getLayout(<Component {...pageProps} />)}</Hydrate>
+        </QueryClientProvider>
+      </ConfigProvider>
+      <Analytics />
+    </>
   )
 }
 
