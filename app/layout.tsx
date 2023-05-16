@@ -1,9 +1,9 @@
+import Footer from '@/components/Footer'
+import Nav from '@/components/Nav'
 import '@/styles/globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import 'antd/dist/reset.css'
 import 'dayjs/locale/zh-cn'
-import Footer from '../components/Footer'
-import Nav from '../components/Nav'
 import Providers from './providers'
 
 export const metadata = {

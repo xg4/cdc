@@ -1,14 +1,14 @@
 'use client'
 
+import ChartCard from '@/components/ChartCard'
+import DiffCard from '@/components/DiffCard'
+import TableCard from '@/components/TableCard'
+import useHouse from '@/hooks/useHouse'
 import { getLatestHouses } from '@/services'
 import { House } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
 import { orderBy, uniqBy } from 'lodash'
-import { TableCard } from '../components'
-import ChartCard from '../components/ChartCard'
-import DiffCard from '../components/DiffCard'
-import useHouse from '../hooks/useHouse'
 
 export default function Client({ houses }: { houses: House[] }) {
   const { data: latestHouses } = useQuery(['getLatestHouses'], getLatestHouses, {
@@ -71,9 +71,9 @@ export default function Client({ houses }: { houses: House[] }) {
         })}
       </Row>
 
-      <ChartCard className="mx-5 mb-5" monthOfData={monthOfData} regionOfData={regionOfData}></ChartCard>
+      <ChartCard className="mx-5 mb-5" monthOfData={monthOfData} regionOfData={regionOfData} />
 
-      <TableCard className="mx-5" houses={dataSource}></TableCard>
+      <TableCard className="mx-5" houses={dataSource} />
     </>
   )
 }

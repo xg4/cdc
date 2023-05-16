@@ -1,6 +1,8 @@
 'use client'
 
-import { RegionCard, Summary, TableCard } from '@/components'
+import RegionCard from '@/components/RegionCard'
+import Summary from '@/components/Summary'
+import TableCard from '@/components/TableCard'
 import { House } from '@prisma/client'
 import { Empty } from 'antd'
 import { orderBy } from 'lodash'
@@ -10,9 +12,9 @@ export default function Client({ houses }: { houses: House[] }) {
 
   return !!houses.length ? (
     <>
-      <RegionCard className="m-5" houses={_houses}></RegionCard>
-      <Summary className="mx-5 mb-5" houses={_houses}></Summary>
-      <TableCard className="mx-5" houses={_houses}></TableCard>
+      <RegionCard className="m-5" houses={_houses} />
+      <Summary className="mx-5 mb-5" houses={_houses} />
+      <TableCard className="mx-5" houses={_houses} />
     </>
   ) : (
     <div className="flex items-center justify-center py-10">

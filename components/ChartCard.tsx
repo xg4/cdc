@@ -4,7 +4,8 @@ import { House } from '@prisma/client'
 import { Card, Divider } from 'antd'
 import { Dictionary } from 'lodash'
 import { useState } from 'react'
-import { MonthChart, RegionChart } from './'
+import MonthChart from './MonthChart'
+import RegionChart from './RegionChart'
 
 const tabList = [
   {
@@ -27,9 +28,9 @@ export default function ChartCard({ monthOfData, regionOfData, className }: Char
   const [tabKey, setTabKey] = useState('房源数')
   return (
     <Card className={className} activeTabKey={tabKey} onTabChange={setTabKey} tabList={tabList}>
-      <MonthChart tabKey={tabKey} monthOfData={monthOfData}></MonthChart>
-      <Divider></Divider>
-      <RegionChart tabKey={tabKey} regionOfData={regionOfData}></RegionChart>
+      <MonthChart tabKey={tabKey} monthOfData={monthOfData} />
+      <Divider />
+      <RegionChart tabKey={tabKey} regionOfData={regionOfData} />
     </Card>
   )
 }

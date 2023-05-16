@@ -22,7 +22,7 @@ export default function Nav() {
       <div className="container mx-auto flex items-center justify-between">
         <ul className="m-0 flex list-none p-0">
           {links.map(link => {
-            const isActive = pathname.startsWith(link.href)
+            const isActive = pathname === link.href
 
             return (
               <li className="p-4" key={link.name}>

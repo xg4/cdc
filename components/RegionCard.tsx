@@ -6,7 +6,7 @@ import { Chart, DonutChart, Interaction, Interval, Line, Point, Tooltip } from '
 import dayjs from 'dayjs'
 import { groupBy, orderBy, sumBy } from 'lodash'
 import { useState } from 'react'
-import Rank from '../components/Rank'
+import Rank from './Rank'
 
 interface RegionCardProps {
   className?: string
