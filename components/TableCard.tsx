@@ -1,3 +1,5 @@
+'use client'
+
 import { House } from '@prisma/client'
 import { Button, Card, DatePicker, Divider, Form, Input, Table } from 'antd'
 import dayjs from 'dayjs'
@@ -17,10 +19,7 @@ function FilterForm({ onFilter }: { onFilter: (values: any) => void }) {
         <Input placeholder="请输入项目名称" />
       </Form.Item>
       <Form.Item label="登记时间" name="date">
-        <DatePicker.RangePicker
-          showTime={{ format: 'HH:mm' }}
-          format="YYYY-MM-DD HH:mm"
-        />
+        <DatePicker.RangePicker showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit" type="primary">
@@ -43,19 +42,16 @@ export default function TableCard({ houses, className }: TableCardProps) {
 
     let draft = houses
     if (name) {
-      draft = draft.filter((house) => house.name.includes(name))
+      draft = draft.filter(house => house.name.includes(name))
     }
     if (date) {
       const [startAt, endsAt] = date
-      draft = draft.filter(
-        (house) =>
-          startAt.diff(house.startAt) <= 0 && endsAt.diff(house.endsAt) >= 0
-      )
+      draft = draft.filter(house => startAt.diff(house.startAt) <= 0 && endsAt.diff(house.endsAt) >= 0)
     }
     setDataSource(draft)
   }
 
-  const ids = dataSource.map((i) => i.uuid).toString()
+  const ids = dataSource.map(i => i.uuid).toString()
 
   const columns = useMemo(
     () => [
@@ -111,7 +107,7 @@ export default function TableCard({ houses, className }: TableCardProps) {
         filterSearch: true,
       },
     ],
-    [ids]
+    [ids],
   )
   return (
     <Card className={className}>

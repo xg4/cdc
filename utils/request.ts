@@ -1,12 +1,10 @@
 import axios from 'axios'
 
-export const request = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-})
+export const request = axios.create()
 
 request.interceptors.response.use(
-  (response) => {
+  response => {
     return response.data
   },
-  (error) => Promise.reject(error)
+  error => Promise.reject(error),
 )

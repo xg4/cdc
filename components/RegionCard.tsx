@@ -1,14 +1,8 @@
+'use client'
+
 import { House } from '@prisma/client'
 import { Card } from 'antd'
-import {
-  Chart,
-  DonutChart,
-  Interaction,
-  Interval,
-  Line,
-  Point,
-  Tooltip,
-} from 'bizcharts'
+import { Chart, DonutChart, Interaction, Interval, Line, Point, Tooltip } from 'bizcharts'
 import dayjs from 'dayjs'
 import { groupBy, orderBy, sumBy } from 'lodash'
 import { useState } from 'react'
@@ -33,21 +27,15 @@ export default function RegionCard({ houses, className }: RegionCardProps) {
   const regionsOfData = groupBy(houses, 'region')
   const regions = orderBy(
     Object.entries(regionsOfData),
-    [
-      ([_, houses]) => sumBy(houses, 'quantity'),
-      ([_, houses]) => houses.length,
-    ],
-    ['desc', 'desc']
+    [([_, houses]) => sumBy(houses, 'quantity'), ([_, houses]) => houses.length],
+    ['desc', 'desc'],
   ).map(([key]) => key)
 
   const [tab, setTab] = useState('全部')
-  const tabs = ['全部'].concat(regions).map((tab) => ({ key: tab, tab }))
+  const tabs = ['全部'].concat(regions).map(tab => ({ key: tab, tab }))
   const _houses = regions.includes(tab) ? regionsOfData[tab] : houses
 
-  const months = groupBy(
-    _houses,
-    (item) => dayjs(item.startAt).month() + 1 + '月'
-  )
+  const months = groupBy(_houses, item => dayjs(item.startAt).month() + 1 + '月')
 
   const data = Object.entries(months).map(([key, houses]) => ({
     month: key,
@@ -56,29 +44,14 @@ export default function RegionCard({ houses, className }: RegionCardProps) {
   }))
 
   return (
-    <Card
-      tabList={tabs}
-      activeTabKey={tab}
-      onTabChange={setTab}
-      className={className}
-    >
+    <Card tabList={tabs} activeTabKey={tab} onTabChange={setTab} className={className}>
       <div className="flex h-80 justify-between">
         <div className="w-1/2">
           <Chart scale={scale} autoFit data={data}>
             <Tooltip shared />
             <Interval position="month*number" color={colors[0]} />
-            <Line
-              position="month*length"
-              color={colors[1]}
-              size={3}
-              shape="smooth"
-            />
-            <Point
-              position="month*length"
-              color={colors[1]}
-              size={3}
-              shape="circle"
-            />
+            <Line position="month*length" color={colors[1]} size={3} shape="smooth" />
+            <Point position="month*length" color={colors[1]} size={3} shape="circle" />
             <Interaction type="active-region" />
           </Chart>
         </div>

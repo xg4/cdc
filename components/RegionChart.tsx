@@ -1,3 +1,5 @@
+'use client'
+
 import { House } from '@prisma/client'
 import { Chart, Interaction, Interval, Tooltip } from 'bizcharts'
 import { Dictionary, orderBy, sumBy } from 'lodash'
@@ -7,10 +9,7 @@ interface RegionChartProps {
   tabKey: string
 }
 
-export default function RegionChart({
-  regionOfData,
-  tabKey,
-}: RegionChartProps) {
+export default function RegionChart({ regionOfData, tabKey }: RegionChartProps) {
   const _data = Object.entries(regionOfData).map(([region, houses]) => {
     return [
       {
@@ -27,9 +26,9 @@ export default function RegionChart({
   })
 
   const data = orderBy(
-    _data.flat().filter((i) => i.name === tabKey),
+    _data.flat().filter(i => i.name === tabKey),
     'value',
-    'desc'
+    'desc',
   )
   return (
     <div>

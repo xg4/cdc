@@ -1,37 +1,21 @@
+'use client'
+
+import { getLatestHouses } from '@/services'
 import { House } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
 import { orderBy, uniqBy } from 'lodash'
-import { GetStaticProps } from 'next'
-import Head from 'next/head'
 import { TableCard } from '../components'
 import ChartCard from '../components/ChartCard'
 import DiffCard from '../components/DiffCard'
-import Layout from '../components/Layout'
 import useHouse from '../hooks/useHouse'
-import { getHouses } from '../server/services'
-import { getLatestHouses } from '../services'
-import { NextPageWithLayout } from './_app'
 
-export const getStaticProps: GetStaticProps = async () => {
-  const houses = await getHouses()
-  return {
-    props: {
-      houses: JSON.parse(JSON.stringify(houses)),
-    },
-  }
-}
+export default function Client({ houses }: { houses: House[] }) {
+  const { data: latestHouses } = useQuery(['getLatestHouses'], getLatestHouses, {
+    initialData: houses,
+  })
 
-const Home: NextPageWithLayout<{ houses: House[] }> = (props) => {
-  const { data: latestHouses } = useQuery(
-    ['getLatestHouses'],
-    getLatestHouses,
-    {
-      initialData: props.houses,
-    }
-  )
-
-  const houses = uniqBy([...latestHouses, ...props.houses], 'uuid')
+  const newHouses = uniqBy([...latestHouses, ...houses], 'uuid')
 
   const {
     currentMonthData,
@@ -44,13 +28,9 @@ const Home: NextPageWithLayout<{ houses: House[] }> = (props) => {
     regionOfData,
     currentYearData,
     prevYearData,
-  } = useHouse(houses)
+  } = useHouse(newHouses)
 
-  const dataSource = orderBy(
-    houses,
-    ['endsAt', 'startAt', 'uuid'],
-    ['desc', 'desc', 'asc']
-  )
+  const dataSource = orderBy(newHouses, ['endsAt', 'startAt', 'uuid'], ['desc', 'desc', 'asc'])
 
   const diffList = [
     {
@@ -81,11 +61,8 @@ const Home: NextPageWithLayout<{ houses: House[] }> = (props) => {
 
   return (
     <>
-      <Head>
-        <title>成都市房源信息</title>
-      </Head>
       <Row gutter={16} className="my-5 px-5">
-        {diffList.map((item) => {
+        {diffList.map(item => {
           return (
             <Col key={item.title} span={6}>
               <DiffCard {...item}></DiffCard>
@@ -94,19 +71,9 @@ const Home: NextPageWithLayout<{ houses: House[] }> = (props) => {
         })}
       </Row>
 
-      <ChartCard
-        className="mx-5 mb-5"
-        monthOfData={monthOfData}
-        regionOfData={regionOfData}
-      ></ChartCard>
+      <ChartCard className="mx-5 mb-5" monthOfData={monthOfData} regionOfData={regionOfData}></ChartCard>
 
       <TableCard className="mx-5" houses={dataSource}></TableCard>
     </>
   )
 }
-
-Home.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>
-}
-
-export default Home

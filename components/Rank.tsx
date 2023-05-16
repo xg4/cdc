@@ -1,3 +1,5 @@
+'use client'
+
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
 import { Avatar, Button, List } from 'antd'
 import classNames from 'classnames'
@@ -36,9 +38,7 @@ export default function Rank({ dataSource, className, title }: RankProps) {
               }
             }}
             type="link"
-            icon={
-              order === 'desc' ? <ArrowDownOutlined /> : <ArrowUpOutlined />
-            }
+            icon={order === 'desc' ? <ArrowDownOutlined /> : <ArrowUpOutlined />}
           ></Button>
         </div>
       }
@@ -48,10 +48,7 @@ export default function Rank({ dataSource, className, title }: RankProps) {
         <List.Item>
           <List.Item.Meta
             avatar={
-              <Avatar
-                className={classNames({ 'bg-blue-500': index < 3 })}
-                size="small"
-              >
+              <Avatar className={classNames({ 'bg-blue-500': index < 3 })} size="small">
                 {index + 1}
               </Avatar>
             }

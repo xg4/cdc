@@ -1,3 +1,5 @@
+'use client'
+
 import { House } from '@prisma/client'
 import { Card } from 'antd'
 import { sumBy } from 'lodash'
@@ -9,12 +11,7 @@ interface DiffCardProps {
   prevData: House[]
 }
 
-export default function DiffCard({
-  title,
-  extra,
-  currentData,
-  prevData,
-}: DiffCardProps) {
+export default function DiffCard({ title, extra, currentData, prevData }: DiffCardProps) {
   const currentNum = currentData.length
   const prevNum = prevData.length
   const diffNum = currentNum - prevNum
@@ -32,11 +29,7 @@ export default function DiffCard({
           {currentNum}
         </span>
 
-        {extra && (
-          <span className={diffNum < 0 ? 'text-green-500' : 'text-red-500'}>
-            {diffNum}
-          </span>
-        )}
+        {extra && <span className={diffNum < 0 ? 'text-green-500' : 'text-red-500'}>{diffNum}</span>}
       </div>
 
       <div className="flex justify-between">
@@ -45,11 +38,7 @@ export default function DiffCard({
           {currentNum2}
         </span>
 
-        {extra && (
-          <span className={diffNum2 < 0 ? 'text-green-500' : 'text-red-500'}>
-            {diffNum2}
-          </span>
-        )}
+        {extra && <span className={diffNum2 < 0 ? 'text-green-500' : 'text-red-500'}>{diffNum2}</span>}
       </div>
     </Card>
   )

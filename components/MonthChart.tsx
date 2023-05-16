@@ -1,3 +1,5 @@
+'use client'
+
 import { House } from '@prisma/client'
 import { Chart, LineAdvance } from 'bizcharts'
 import { Dictionary, orderBy, sumBy } from 'lodash'
@@ -22,9 +24,9 @@ export default function MonthChart({ monthOfData, tabKey }: MonthChartProps) {
     },
   ])
   const data = orderBy(
-    _data.flat().filter((i) => i.name === tabKey),
+    _data.flat().filter(i => i.name === tabKey),
     'month',
-    'asc'
+    'asc',
   )
 
   return (
@@ -33,19 +35,13 @@ export default function MonthChart({ monthOfData, tabKey }: MonthChartProps) {
       <div className="flex h-80 justify-between overflow-hidden">
         <div className="w-3/4">
           <Chart autoFit data={data}>
-            <LineAdvance
-              shape="smooth"
-              point
-              area
-              position="month*value"
-              color="name"
-            />
+            <LineAdvance shape="smooth" point area position="month*value" color="name" />
           </Chart>
         </div>
         <Rank
           className="w-1/5"
           title="排名：月份"
-          dataSource={data.map((item) => ({
+          dataSource={data.map(item => ({
             ...item,
             name: item.month,
             key: item.month,
