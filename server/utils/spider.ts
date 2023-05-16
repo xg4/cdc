@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { load } from 'cheerio'
 import { head } from 'lodash'
-import buildURL from './buildURL'
+import buildUrl from './buildUrl'
 import { md5 } from './md5'
 import { getTzDate } from './time'
 
@@ -47,11 +47,18 @@ function filterData(sourceData: string[]): Prisma.HouseCreateInput {
 
 function parseHtml(htmlStr: string) {
   const $ = load(htmlStr)
-  return Array.from($('#_projectInfo > tr')).map(tr => Array.from($(tr).children()).map(td => $(td).text()))
+  return $('#_projectInfo > tr')
+    .toArray()
+    .map(tr =>
+      $(tr)
+        .children()
+        .toArray()
+        .map(td => $(td).text()),
+    )
 }
 
 export async function pull(pageNo = 1) {
-  const url = buildURL(process.env.API_URL!, {
+  const url = buildUrl(process.env.API_URL!, {
     pageNo,
   })
   const result = await fetch(url, {
