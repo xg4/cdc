@@ -7,7 +7,7 @@ import { uniqBy } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 
 interface TableCardProps {
-  houses: House[]
+  houses: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]
   className?: string
 }
 
@@ -58,11 +58,11 @@ export default function TableCard({ houses, className }: TableCardProps) {
       {
         title: '区域',
         dataIndex: 'region',
-        filters: uniqBy(dataSource, 'region').map((item: House) => ({
+        filters: uniqBy(dataSource, 'region').map(item => ({
           text: item.region,
           value: item.region,
         })),
-        onFilter: (value: any, record: House) => record.region.includes(value),
+        onFilter: (value: any, record: any) => record.region.includes(value),
         filterSearch: true,
       },
       {
@@ -72,7 +72,7 @@ export default function TableCard({ houses, className }: TableCardProps) {
       {
         title: '住房套数',
         dataIndex: 'quantity',
-        sorter(a: House, b: House) {
+        sorter(a: any, b: any) {
           return a.quantity - b.quantity
         },
       },
@@ -82,7 +82,7 @@ export default function TableCard({ houses, className }: TableCardProps) {
         render(i: string) {
           return dayjs(i).format('YYYY-MM-DD HH:mm:ss')
         },
-        sorter(a: House, b: House) {
+        sorter(a: any, b: any) {
           return dayjs(a.startAt).diff(b.startAt)
         },
       },
@@ -92,18 +92,18 @@ export default function TableCard({ houses, className }: TableCardProps) {
         render(i: string) {
           return dayjs(i).format('YYYY-MM-DD HH:mm:ss')
         },
-        sorter(a: House, b: House) {
+        sorter(a: any, b: any) {
           return dayjs(a.endsAt).diff(b.endsAt)
         },
       },
       {
         title: '报名状态',
         dataIndex: 'status',
-        filters: uniqBy(dataSource, 'status').map((item: House) => ({
+        filters: uniqBy(dataSource, 'status').map(item => ({
           text: item.status,
           value: item.status,
         })),
-        onFilter: (value: any, record: House) => record.status.includes(value),
+        onFilter: (value: any, record: any) => record.status.includes(value),
         filterSearch: true,
       },
     ],

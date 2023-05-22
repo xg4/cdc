@@ -6,7 +6,7 @@ import { Dictionary, orderBy, sumBy } from 'lodash'
 import Rank from './Rank'
 
 interface MonthChartProps {
-  monthOfData: Dictionary<House[]>
+  monthOfData: Dictionary<Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]>
   tabKey: string
 }
 

@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
 import { orderBy, uniqBy } from 'lodash'
 
-export default function Client({ houses }: { houses: House[] }) {
+export default function Client({ houses }: { houses: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[] }) {
   const { data: latestHouses } = useQuery(['getLatestHouses'], getLatestHouses, {
     initialData: houses,
   })
@@ -61,7 +61,7 @@ export default function Client({ houses }: { houses: House[] }) {
 
   return (
     <>
-      <Row gutter={16} className="my-5 px-5">
+      <Row gutter={16}>
         {diffList.map(item => {
           return (
             <Col key={item.title} span={6}>
@@ -71,9 +71,9 @@ export default function Client({ houses }: { houses: House[] }) {
         })}
       </Row>
 
-      <ChartCard className="mx-5 mb-5" monthOfData={monthOfData} regionOfData={regionOfData} />
+      <ChartCard monthOfData={monthOfData} regionOfData={regionOfData} />
 
-      <TableCard className="mx-5" houses={dataSource} />
+      <TableCard houses={dataSource} />
     </>
   )
 }

@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <Providers>
         <body className="bg-gray-100">
           <Nav />
-          <div className="container mx-auto mb-10">{children}</div>
+          <div className="container mx-auto my-5 space-y-5">{children}</div>
           <Footer />
         </body>
       </Providers>

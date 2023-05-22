@@ -3,6 +3,16 @@ import dayjs from 'dayjs'
 import { omit } from 'lodash'
 import { prisma } from '../utils'
 
+const select = {
+  uuid: true,
+  name: true,
+  region: true,
+  quantity: true,
+  status: true,
+  endsAt: true,
+  startAt: true,
+}
+
 export async function saveHouse(house: Prisma.HouseCreateInput) {
   const savedHouse = await prisma.house.findUnique({
     where: {
@@ -32,11 +42,14 @@ export function getLatestHouses(date: dayjs.Dayjs) {
         gte: date.toDate(),
       },
     },
+    select,
   })
 }
 
 export function getHouses() {
-  return prisma.house.findMany()
+  return prisma.house.findMany({
+    select,
+  })
 }
 
 export function getHousesByYear(year: dayjs.Dayjs) {
@@ -47,5 +60,6 @@ export function getHousesByYear(year: dayjs.Dayjs) {
         lte: year.endOf('year').toDate(),
       },
     },
+    select,
   })
 }

@@ -7,8 +7,8 @@ import { sumBy } from 'lodash'
 interface DiffCardProps {
   title: string
   extra?: string
-  currentData: House[]
-  prevData: House[]
+  currentData: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]
+  prevData: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]
 }
 
 export default function DiffCard({ title, extra, currentData, prevData }: DiffCardProps) {

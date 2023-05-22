@@ -19,8 +19,8 @@ const tabList = [
 ]
 
 interface ChartCardProps {
-  regionOfData: Dictionary<House[]>
-  monthOfData: Dictionary<House[]>
+  regionOfData: Dictionary<Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]>
+  monthOfData: Dictionary<Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]>
   className?: string
 }
 

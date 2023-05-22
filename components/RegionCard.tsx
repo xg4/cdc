@@ -10,7 +10,7 @@ import Rank from './Rank'
 
 interface RegionCardProps {
   className?: string
-  houses: House[]
+  houses: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]
 }
 
 const colors = ['#6394f9', '#62daaa']
