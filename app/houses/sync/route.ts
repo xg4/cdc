@@ -1,19 +1,16 @@
 import { saveHouse } from '@/server/services'
 import { pull } from '@/server/utils'
-import { compact, isInteger } from 'lodash'
+import { compact } from 'lodash'
 import { NextResponse } from 'next/server'
+import { z } from 'zod'
+
+const schema = z.object({
+  page: z.number().int(),
+})
 
 export async function POST(request: Request) {
-  const res: { page: number } = await request.json()
-
-  const page = +res.page
-  if (!isInteger(page)) {
-    return NextResponse.json('请求错误', {
-      status: 400,
-    })
-  }
-
   try {
+    const { page } = await request.json().then(schema.parse)
     const houses = await pull(page)
     const dbHouses = await Promise.all(houses.map(saveHouse))
     const changedHouses = compact(dbHouses)

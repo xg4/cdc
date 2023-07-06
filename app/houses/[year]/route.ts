@@ -1,6 +1,11 @@
 import { getHousesByYear } from '@/server/services'
 import dayjs from 'dayjs'
 import { NextResponse } from 'next/server'
+import { z } from 'zod'
+
+const schema = z.object({
+  year: z.coerce.number().int().max(dayjs().year()).min(2017),
+})
 
 export async function GET(
   _: Request,
@@ -10,11 +15,14 @@ export async function GET(
     params: { year: string }
   },
 ) {
-  const currentYear = dayjs().year(+params.year)
-  if (!currentYear.isValid()) {
-    return NextResponse.json('参数错误', { status: 400 })
-  }
+  try {
+    const { year } = schema.parse(params)
 
-  const houses = await getHousesByYear(currentYear)
-  return NextResponse.json(houses)
+    const houses = await getHousesByYear(dayjs().year(year))
+    return NextResponse.json(houses)
+  } catch {
+    return NextResponse.json('服务器错误', {
+      status: 500,
+    })
+  }
 }

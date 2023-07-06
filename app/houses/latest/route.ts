@@ -1,16 +1,22 @@
 import { getLatestHouses } from '@/server/services'
+import { getUrlQuery } from '@/utils/url'
 import dayjs from 'dayjs'
 import { NextResponse } from 'next/server'
+import { z } from 'zod'
+
+const schema = z.object({
+  date: z.string().datetime(),
+})
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const date = searchParams.get('date')
+  try {
+    const { date } = schema.parse(getUrlQuery(request.url))
 
-  const buildDate = dayjs(date)
-  if (!buildDate.isValid()) {
-    return NextResponse.json('参数错误', { status: 400 })
+    const houses = await getLatestHouses(dayjs(date))
+    return NextResponse.json(houses)
+  } catch {
+    return NextResponse.json('服务器错误', {
+      status: 500,
+    })
   }
-
-  const houses = await getLatestHouses(buildDate)
-  return NextResponse.json(houses)
 }
