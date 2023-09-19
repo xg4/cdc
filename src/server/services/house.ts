@@ -32,11 +32,18 @@ export function getLatestHouses(date: string) {
         gte: dayjs(date).toDate(),
       },
     },
+    orderBy: {
+      id: 'desc',
+    },
   })
 }
 
 export function getHouses() {
-  return prisma.house.findMany({})
+  return prisma.house.findMany({
+    orderBy: {
+      id: 'desc',
+    },
+  })
 }
 
 export function getHousesByYear(year: number) {
@@ -47,6 +54,9 @@ export function getHousesByYear(year: number) {
         gte: d.startOf('year').toDate(),
         lte: d.endOf('year').toDate(),
       },
+    },
+    orderBy: {
+      id: 'asc',
     },
   })
 }
