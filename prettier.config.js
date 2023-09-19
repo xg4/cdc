@@ -1,4 +1,9 @@
+/** @type {import("prettier").Options} */
 module.exports = {
-  ...require('@xg4/prettier-config'),
-  plugins: [require('prettier-plugin-tailwindcss')],
+  printWidth: 120,
+  semi: false,
+  singleQuote: true,
+  trailingComma: 'all',
+  arrowParens: 'avoid',
+  plugins: ['prettier-plugin-tailwindcss'],
 }
