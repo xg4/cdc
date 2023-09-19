@@ -10,13 +10,13 @@ import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
 import { orderBy, uniqBy } from 'lodash'
 
-export default function Client({ houses }: { houses: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[] }) {
+export default function Client({ houses }: { houses: House[] }) {
   const { data: latestHouses } = useQuery(['getLatestHouses'], getLatestHouses, {
     initialData: houses,
   })
 
   const newHouses = uniqBy([...latestHouses, ...houses], 'uuid')
-
+  const dataSource = orderBy(newHouses, ['id'], ['desc'])
   const {
     currentMonthData,
     currentQuarterData,
@@ -28,9 +28,7 @@ export default function Client({ houses }: { houses: Omit<House, 'createdAt' | '
     regionOfData,
     currentYearData,
     prevYearData,
-  } = useHouse(newHouses)
-
-  const dataSource = orderBy(newHouses, ['endsAt', 'startAt', 'uuid'], ['desc', 'desc', 'asc'])
+  } = useHouse(dataSource)
 
   const diffList = [
     {

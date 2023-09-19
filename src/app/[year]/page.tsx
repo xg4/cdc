@@ -1,6 +1,6 @@
 import { getHousesByYear } from '@/server/services'
-import dayjs from 'dayjs'
 import { HOUSE_YEARS } from '../../constants'
+import { yearParamsSchema } from '../houses/[year]/schema'
 import Client from './client'
 
 export async function generateStaticParams() {
@@ -14,8 +14,8 @@ export async function generateMetadata({ params }: { params: { year: string } })
 }
 
 export default async function Page({ params }: { params: { year: string } }) {
-  const year = Number(params.year)
-  const houses = await getHousesByYear(dayjs().year(year))
+  const { year } = yearParamsSchema.parse(params)
+  const houses = await getHousesByYear(year)
 
   return <Client houses={houses} />
 }

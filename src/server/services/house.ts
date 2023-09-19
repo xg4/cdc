@@ -1,17 +1,7 @@
 import { Prisma } from '@prisma/client'
 import dayjs from 'dayjs'
-import { omit } from 'lodash'
+import { isMatch } from 'lodash'
 import { prisma } from '../utils'
-
-const select = {
-  uuid: true,
-  name: true,
-  region: true,
-  quantity: true,
-  status: true,
-  endsAt: true,
-  startAt: true,
-}
 
 export async function saveHouse(house: Prisma.HouseCreateInput) {
   const savedHouse = await prisma.house.findUnique({
@@ -25,41 +15,38 @@ export async function saveHouse(house: Prisma.HouseCreateInput) {
     })
   }
 
-  if (savedHouse.hash !== house.hash) {
+  if (!isMatch(saveHouse, house)) {
     return prisma.house.update({
       where: {
         uuid: house.uuid,
       },
-      data: omit(house, 'profile'),
+      data: house,
     })
   }
 }
 
-export function getLatestHouses(date: dayjs.Dayjs) {
+export function getLatestHouses(date: string) {
   return prisma.house.findMany({
     where: {
-      updatedAt: {
-        gte: date.toDate(),
+      startAt: {
+        gte: dayjs(date).toDate(),
       },
     },
-    select,
   })
 }
 
 export function getHouses() {
-  return prisma.house.findMany({
-    select,
-  })
+  return prisma.house.findMany({})
 }
 
-export function getHousesByYear(year: dayjs.Dayjs) {
+export function getHousesByYear(year: number) {
+  const d = dayjs().year(year)
   return prisma.house.findMany({
     where: {
       startAt: {
-        gte: year.startOf('year').toDate(),
-        lte: year.endOf('year').toDate(),
+        gte: d.startOf('year').toDate(),
+        lte: d.endOf('year').toDate(),
       },
     },
-    select,
   })
 }

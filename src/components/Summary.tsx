@@ -15,18 +15,12 @@ const scale = {
   },
 }
 
-export default function Summary({
-  houses,
-  className,
-}: {
-  houses: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]
-  className?: string
-}) {
+export default function Summary({ houses, className }: { houses: House[]; className?: string }) {
   const regionsOfData = groupBy(houses, 'region')
   const _regionsChart = Object.entries(regionsOfData).map(([region, houses]) => ({
     region,
     length: houses.length,
-    number: sumBy(houses, 'quantity'),
+    number: sumBy(houses, 'amount'),
   }))
   const regionsChart = orderBy(_regionsChart, ['number', 'length'], ['desc', 'desc'])
 

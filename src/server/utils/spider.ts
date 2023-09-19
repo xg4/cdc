@@ -1,60 +1,40 @@
-import { Prisma } from '@prisma/client'
-import { load } from 'cheerio'
+import { JSDOM } from 'jsdom'
 import { head } from 'lodash'
+import { z } from 'zod'
 import buildUrl from './buildUrl'
-import { md5 } from './md5'
 import { getTzDate } from './time'
 
-function filterData(sourceData: string[]): Prisma.HouseCreateInput {
-  const hash = md5(sourceData.join())
-  const [
-    uuid,
-    ,
-    region,
-    name,
-    certificateNumber,
-    detail,
-    quantity,
-    phoneNumber,
-    startAt,
-    endsAt,
-    externalDate,
-    internalDate,
-    qrCodeDate,
-    status,
-  ] = sourceData
-  return {
+export const houseInputSchema = z.object({
+  uuid: z.string(),
+  region: z.string(),
+  name: z.string(),
+  amount: z.coerce.number().int(),
+  scope: z.string(),
+  startAt: z.date(),
+  endAt: z.date(),
+  status: z.string(),
+})
+
+function filterData([uuid, , region, name, , scope, amount, , startAt, endAt, , , , status]: any[]) {
+  return houseInputSchema.parse({
     uuid,
     region,
     name,
-    quantity: Number(quantity),
+    amount,
+    scope,
     startAt: getTzDate(startAt),
-    endsAt: getTzDate(endsAt),
+    endAt: getTzDate(endAt),
     status,
-    hash,
-    profile: {
-      create: {
-        detail,
-        phoneNumber,
-        certificateNumber,
-        externalDate: externalDate ? getTzDate(externalDate) : null,
-        internalDate: internalDate ? getTzDate(internalDate) : null,
-        qrCodeDate: qrCodeDate ? getTzDate(qrCodeDate) : null,
-      },
-    },
-  }
+  })
 }
 
 function parseHtml(htmlStr: string) {
-  const $ = load(htmlStr)
-  return $('#_projectInfo > tr')
-    .toArray()
-    .map(tr =>
-      $(tr)
-        .children()
-        .toArray()
-        .map(td => $(td).text()),
-    )
+  const {
+    window: { document },
+  } = new JSDOM(htmlStr)
+  return Array.from(document.querySelectorAll<HTMLTableRowElement>('#_projectInfo > tr')).map(tr =>
+    Array.from(tr.children).map(td => td.textContent),
+  )
 }
 
 export async function pull(pageNo = 1) {
@@ -66,13 +46,8 @@ export async function pull(pageNo = 1) {
   }).then(res => res.text())
 
   const list = parseHtml(result)
-  if (!list.length) {
-    throw new Error()
-  }
-
   const first = head(list)
-
-  if (first && first[14] !== '查看') {
+  if (!first || first[14] !== '查看') {
     throw new Error()
   }
 

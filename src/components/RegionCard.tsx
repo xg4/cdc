@@ -10,7 +10,7 @@ import Rank from './Rank'
 
 interface RegionCardProps {
   className?: string
-  houses: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]
+  houses: House[]
 }
 
 const colors = ['#6394f9', '#62daaa']
@@ -27,7 +27,7 @@ export default function RegionCard({ houses, className }: RegionCardProps) {
   const regionsOfData = groupBy(houses, 'region')
   const regions = orderBy(
     Object.entries(regionsOfData),
-    [([_, houses]) => sumBy(houses, 'quantity'), ([_, houses]) => houses.length],
+    [([_, houses]) => sumBy(houses, 'amount'), ([_, houses]) => houses.length],
     ['desc', 'desc'],
   ).map(([key]) => key)
 
@@ -40,7 +40,7 @@ export default function RegionCard({ houses, className }: RegionCardProps) {
   const data = Object.entries(months).map(([key, houses]) => ({
     month: key,
     length: houses.length,
-    number: sumBy(houses, 'quantity'),
+    number: sumBy(houses, 'amount'),
   }))
 
   return (
@@ -71,7 +71,7 @@ export default function RegionCard({ houses, className }: RegionCardProps) {
           dataSource={_houses.map((item, index) => ({
             key: item.name + index,
             name: item.name,
-            value: item.quantity,
+            value: item.amount,
           }))}
         ></Rank>
       </div>

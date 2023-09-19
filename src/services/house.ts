@@ -6,10 +6,8 @@ export function syncHouses(page = 1): Promise<House[]> {
 }
 
 export function getLatestHouses(): Promise<House[]> {
-  return request.get('/houses/latest', {
-    params: {
-      date: process.env.buildDate,
-    },
+  return request.post('/houses/latest', {
+    buildDate: process.env.buildDate,
   })
 }
 

@@ -7,7 +7,7 @@ import { uniqBy } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 
 interface TableCardProps {
-  houses: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]
+  houses: House[]
   className?: string
 }
 
@@ -45,8 +45,8 @@ export default function TableCard({ houses, className }: TableCardProps) {
       draft = draft.filter(house => house.name.includes(name))
     }
     if (date) {
-      const [startAt, endsAt] = date
-      draft = draft.filter(house => startAt.diff(house.startAt) <= 0 && endsAt.diff(house.endsAt) >= 0)
+      const [startAt, endAt] = date
+      draft = draft.filter(house => startAt.diff(house.startAt) <= 0 && endAt.diff(house.endAt) >= 0)
     }
     setDataSource(draft)
   }
@@ -71,9 +71,9 @@ export default function TableCard({ houses, className }: TableCardProps) {
       },
       {
         title: '住房套数',
-        dataIndex: 'quantity',
+        dataIndex: 'amount',
         sorter(a: any, b: any) {
-          return a.quantity - b.quantity
+          return a.amount - b.amount
         },
       },
       {
@@ -88,12 +88,12 @@ export default function TableCard({ houses, className }: TableCardProps) {
       },
       {
         title: '登记结束时间',
-        dataIndex: 'endsAt',
+        dataIndex: 'endAt',
         render(i: string) {
           return dayjs(i).format('YYYY-MM-DD HH:mm:ss')
         },
         sorter(a: any, b: any) {
-          return dayjs(a.endsAt).diff(b.endsAt)
+          return dayjs(a.endAt).diff(b.endAt)
         },
       },
       {

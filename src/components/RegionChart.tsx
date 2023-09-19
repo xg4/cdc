@@ -5,7 +5,7 @@ import { Chart, Interaction, Interval, Tooltip } from 'bizcharts'
 import { Dictionary, orderBy, sumBy } from 'lodash'
 
 interface RegionChartProps {
-  regionOfData: Dictionary<Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]>
+  regionOfData: Dictionary<House[]>
   tabKey: string
 }
 
@@ -14,7 +14,7 @@ export default function RegionChart({ regionOfData, tabKey }: RegionChartProps) 
     return [
       {
         region: region,
-        value: sumBy(houses, 'quantity'),
+        value: sumBy(houses, 'amount'),
         name: '房源数',
       },
       {

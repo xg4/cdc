@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import { groupBy } from 'lodash'
 import { useMemo } from 'react'
 
-export default function useHouse(data: Omit<House, 'createdAt' | 'updatedAt' | 'hash'>[]) {
+export default function useHouse(data: House[]) {
   return useMemo(() => {
     const yearOfData = groupBy(data, item => dayjs(item.startAt).get('year'))
     const monthOfData = groupBy(data, item => dayjs(item.startAt).format('YYYY-MM'))

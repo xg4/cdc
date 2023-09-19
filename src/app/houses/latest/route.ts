@@ -1,18 +1,16 @@
 import { getLatestHouses } from '@/server/services'
-import { getUrlQuery } from '@/utils/url'
-import dayjs from 'dayjs'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-const schema = z.object({
-  date: z.string().datetime(),
+const jsonDataSchema = z.object({
+  buildDate: z.string().datetime(),
 })
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
-    const { date } = schema.parse(getUrlQuery(request.url))
+    const { buildDate } = await request.json().then(jsonDataSchema.parse)
 
-    const houses = await getLatestHouses(dayjs(date))
+    const houses = await getLatestHouses(buildDate)
     return NextResponse.json(houses)
   } catch {
     return NextResponse.json('服务器错误', {

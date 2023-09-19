@@ -1,6 +1,6 @@
 'use client'
 
-import pkg from '../package.json'
+import pkg from '../../package.json'
 
 export default function Nav() {
   return (

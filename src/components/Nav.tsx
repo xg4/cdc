@@ -6,7 +6,7 @@ import { Button } from 'antd'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import pkg from '../package.json'
+import pkg from '../../package.json'
 
 export default function Nav() {
   const links = [{ name: '首页', href: '/' }].concat(
