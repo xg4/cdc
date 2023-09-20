@@ -50,10 +50,9 @@ export default function Client({ houses }: { houses: House[] }) {
       prevData: prevQuarterData,
     },
     {
-      title: '今年',
-      extra: '相比去年',
-      currentData: currentYearData,
-      prevData: prevYearData,
+      title: '总量',
+      currentData: dataSource,
+      prevData: [],
     },
   ]
 

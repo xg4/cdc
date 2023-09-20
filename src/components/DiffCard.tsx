@@ -2,7 +2,7 @@
 
 import { House } from '@prisma/client'
 import { Card } from 'antd'
-import { sumBy } from 'lodash'
+import { sumBy, uniqBy } from 'lodash'
 
 interface DiffCardProps {
   title: string
@@ -12,8 +12,8 @@ interface DiffCardProps {
 }
 
 export default function DiffCard({ title, extra, currentData, prevData }: DiffCardProps) {
-  const currentNum = currentData.length
-  const prevNum = prevData.length
+  const currentNum = uniqBy(currentData, 'name').length
+  const prevNum = uniqBy(prevData, 'name').length
   const diffNum = currentNum - prevNum
 
   const currentNum2 = sumBy(currentData, 'amount')
