@@ -3,7 +3,7 @@
 import { House } from '@prisma/client'
 import { Card } from 'antd'
 import { Chart, Interaction, Interval, Line, Point, Tooltip } from 'bizcharts'
-import { groupBy, orderBy, sumBy } from 'lodash'
+import { groupBy, orderBy, sumBy, uniqBy } from 'lodash'
 
 const colors = ['#6394f9', '#62daaa']
 const scale = {
@@ -19,7 +19,7 @@ export default function Summary({ houses, className }: { houses: House[]; classN
   const regionsOfData = groupBy(houses, 'region')
   const _regionsChart = Object.entries(regionsOfData).map(([region, houses]) => ({
     region,
-    length: houses.length,
+    length: uniqBy(houses, 'name').length,
     number: sumBy(houses, 'amount'),
   }))
   const regionsChart = orderBy(_regionsChart, ['number', 'length'], ['desc', 'desc'])

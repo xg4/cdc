@@ -2,7 +2,7 @@
 
 import { House } from '@prisma/client'
 import { Chart, Interaction, Interval, Tooltip } from 'bizcharts'
-import { Dictionary, orderBy, sumBy } from 'lodash'
+import { Dictionary, orderBy, sumBy, uniqBy } from 'lodash'
 
 interface RegionChartProps {
   regionOfData: Dictionary<House[]>
@@ -20,7 +20,7 @@ export default function RegionChart({ regionOfData, tabKey }: RegionChartProps) 
       {
         region: region,
         name: '楼盘数',
-        value: houses.length,
+        value: uniqBy(houses, 'name').length,
       },
     ]
   })

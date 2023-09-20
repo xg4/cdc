@@ -2,7 +2,7 @@
 
 import { House } from '@prisma/client'
 import { Chart, LineAdvance } from 'bizcharts'
-import { Dictionary, orderBy, sumBy } from 'lodash'
+import { Dictionary, orderBy, sumBy, unionBy } from 'lodash'
 import Rank from './Rank'
 
 interface MonthChartProps {
@@ -20,7 +20,7 @@ export default function MonthChart({ monthOfData, tabKey }: MonthChartProps) {
     {
       name: '楼盘数',
       month: key,
-      value: houses.length,
+      value: unionBy(houses, 'name').length,
     },
   ])
   const data = orderBy(

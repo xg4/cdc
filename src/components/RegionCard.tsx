@@ -4,7 +4,7 @@ import { House } from '@prisma/client'
 import { Card } from 'antd'
 import { Chart, DonutChart, Interaction, Interval, Line, Point, Tooltip } from 'bizcharts'
 import dayjs from 'dayjs'
-import { groupBy, orderBy, sumBy } from 'lodash'
+import { groupBy, orderBy, sumBy, uniqBy } from 'lodash'
 import { useState } from 'react'
 import Rank from './Rank'
 
@@ -39,7 +39,7 @@ export default function RegionCard({ houses, className }: RegionCardProps) {
 
   const data = Object.entries(months).map(([key, houses]) => ({
     month: key,
-    length: houses.length,
+    length: uniqBy(houses, 'name').length,
     number: sumBy(houses, 'amount'),
   }))
 
