@@ -8,15 +8,12 @@ import { getLatestHouses } from '@/services'
 import { House } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
-import { orderBy, uniqBy } from 'lodash'
+import { uniqBy } from 'lodash'
 
 export default function Client({ houses }: { houses: House[] }) {
-  const { data: latestHouses } = useQuery(['getLatestHouses'], getLatestHouses, {
-    initialData: houses,
-  })
+  const { data: latestHouses } = useQuery(['getLatestHouses'], getLatestHouses)
 
-  const newHouses = uniqBy([...latestHouses, ...houses], 'uuid')
-  const dataSource = orderBy(newHouses, ['id'], ['desc'])
+  const dataSource = latestHouses ? uniqBy([...latestHouses, ...houses], 'uuid') : houses
   const {
     currentMonthData,
     currentQuarterData,
@@ -26,8 +23,6 @@ export default function Client({ houses }: { houses: House[] }) {
     prevWeekData,
     monthOfData,
     regionOfData,
-    currentYearData,
-    prevYearData,
   } = useHouse(dataSource)
 
   const diffList = [

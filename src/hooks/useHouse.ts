@@ -23,10 +23,6 @@ export default function useHouse(data: House[]) {
     const currentWeekData = weekOfData[[currentDate.weekYear(), currentDate.week()].join('-')] ?? []
     const prevWeekData = weekOfData[[prevWeek.weekYear(), prevWeek.week()].join('-')] ?? []
 
-    const prevYear = currentDate.subtract(1, 'year')
-    const currentYearData = yearOfData[currentDate.format('YYYY')] ?? []
-    const prevYearData = yearOfData[prevYear.format('YYYY')] ?? []
-
     const prevQuarter = currentDate.subtract(1, 'quarter')
     const currentQuarterData = quarterOfData[[currentDate.get('year'), currentDate.quarter()].join('-')] ?? []
     const prevQuarterData = quarterOfData[[prevQuarter.get('year'), prevQuarter.quarter()].join('-')] ?? []
@@ -39,8 +35,6 @@ export default function useHouse(data: House[]) {
     return {
       currentWeekData,
       prevWeekData,
-      currentYearData,
-      prevYearData,
       currentQuarterData,
       prevQuarterData,
       currentMonthData,
