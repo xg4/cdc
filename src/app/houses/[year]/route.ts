@@ -1,7 +1,5 @@
 import { getHousesByYear } from '@/server/services'
-import dayjs from 'dayjs'
 import { NextResponse } from 'next/server'
-import { z } from 'zod'
 import { yearParamsSchema } from './schema'
 
 export async function GET(

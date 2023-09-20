@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client'
 import dayjs from 'dayjs'
 import { isMatch } from 'lodash'
-import { prisma } from '../utils'
+import { prisma } from '../utils/prisma'
 
 export async function saveHouse(house: Prisma.HouseCreateInput) {
   const savedHouse = await prisma.house.findUnique({

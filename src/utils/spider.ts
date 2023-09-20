@@ -1,8 +1,8 @@
+import { getTzDate } from '@/utils/time'
 import { JSDOM } from 'jsdom'
 import { head } from 'lodash'
 import { z } from 'zod'
 import buildUrl from './buildUrl'
-import { getTzDate } from './time'
 
 export const houseInputSchema = z.object({
   uuid: z.string(),

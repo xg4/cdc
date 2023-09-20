@@ -9,11 +9,18 @@ import { House } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
 import { uniqBy } from 'lodash'
+import { useMemo } from 'react'
 
 export default function Client({ houses }: { houses: House[] }) {
   const { data: latestHouses } = useQuery(['getLatestHouses'], getLatestHouses)
 
-  const dataSource = latestHouses ? uniqBy([...latestHouses, ...houses], 'uuid') : houses
+  const dataSource = useMemo(() => {
+    if (!latestHouses || !latestHouses.length) {
+      return houses
+    }
+    return uniqBy([...latestHouses, ...houses], 'uuid')
+  }, [houses, latestHouses])
+
   const {
     currentMonthData,
     currentQuarterData,

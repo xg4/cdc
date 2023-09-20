@@ -51,8 +51,6 @@ export default function TableCard({ houses, className }: TableCardProps) {
     setDataSource(draft)
   }
 
-  const ids = dataSource.map(i => i.uuid).toString()
-
   const columns = useMemo(
     () => [
       {
@@ -107,7 +105,7 @@ export default function TableCard({ houses, className }: TableCardProps) {
         filterSearch: true,
       },
     ],
-    [ids],
+    [dataSource],
   )
   return (
     <Card className={className}>

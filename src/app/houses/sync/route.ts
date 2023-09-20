@@ -1,15 +1,15 @@
 import { saveHouse } from '@/server/services'
-import { pull } from '@/server/utils'
+import { pull } from '@/utils/spider'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-const schema = z.object({
+const jsonDataSchema = z.object({
   page: z.number().int(),
 })
 
 export async function POST(request: Request) {
   try {
-    const { page } = await request.json().then(schema.parse)
+    const { page } = await request.json().then(jsonDataSchema.parse)
     const houses = await pull(page)
     for (const h of houses) {
       await saveHouse(h)
