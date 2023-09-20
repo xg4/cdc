@@ -1,6 +1,5 @@
 import { getTzDate } from '@/utils/time'
 import { JSDOM } from 'jsdom'
-import { head } from 'lodash'
 import { z } from 'zod'
 import buildUrl from './buildUrl'
 
@@ -10,20 +9,31 @@ export const houseInputSchema = z.object({
   name: z.string(),
   amount: z.coerce.number().int(),
   scope: z.string(),
-  startAt: z.date(),
-  endAt: z.date(),
+  startAt: z
+    .string()
+    .transform(v => getTzDate(v))
+    .refine(d => d.isValid())
+    .transform(d => d.toDate()),
+  endAt: z
+    .string()
+    .transform(v => getTzDate(v))
+    .refine(d => d.isValid())
+    .transform(d => d.toDate()),
   status: z.string(),
 })
 
-function filterData([uuid, , region, name, , scope, amount, , startAt, endAt, , , , status]: any[]) {
+function transformData([uuid, , region, name, , scope, amount, , startAt, endAt, , , , status, text]: any[]) {
+  z.string()
+    .refine(s => s === '查看')
+    .parse(text)
   return houseInputSchema.parse({
     uuid,
     region,
     name,
     amount,
     scope,
-    startAt: getTzDate(startAt),
-    endAt: getTzDate(endAt),
+    startAt,
+    endAt,
     status,
   })
 }
@@ -45,11 +55,5 @@ export async function pull(pageNo = 1) {
     method: 'POST',
   }).then(res => res.text())
 
-  const list = parseHtml(result)
-  const first = head(list)
-  if (!first || first[14] !== '查看') {
-    throw new Error()
-  }
-
-  return list.reverse().map(filterData)
+  return parseHtml(result).map(transformData).reverse()
 }

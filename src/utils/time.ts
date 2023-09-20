@@ -6,5 +6,5 @@ const plugins = [utc, timezone]
 plugins.forEach(p => dayjs.extend(p))
 
 export function getTzDate(date: string) {
-  return dayjs.tz(date, 'Asia/Shanghai').toDate()
+  return dayjs.tz(date, 'Asia/Shanghai')
 }
