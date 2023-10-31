@@ -25,19 +25,6 @@ export async function saveHouse(house: Prisma.HouseCreateInput) {
   }
 }
 
-export function getLatestHouses(date: string) {
-  return prisma.house.findMany({
-    where: {
-      startAt: {
-        gte: dayjs(date).toDate(),
-      },
-    },
-    orderBy: {
-      id: 'desc',
-    },
-  })
-}
-
 export function getHouses() {
   return prisma.house.findMany({
     orderBy: {

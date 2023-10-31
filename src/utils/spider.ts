@@ -57,3 +57,24 @@ export async function pull(pageNo = 1) {
 
   return parseHtml(result).map(transformData).reverse()
 }
+
+export async function getPageDetail() {
+  const url = buildUrl(process.env.API_URL!, {
+    pageNo: 1,
+  })
+
+  const htmlStr = await fetch(url, {
+    method: 'POST',
+  }).then(res => res.text())
+
+  const regex = /var totalPage = parseInt\("(\d+)"\);/
+  const match = htmlStr.match(regex)
+
+  const page = z.coerce
+    .number()
+    .int()
+    .parse(match && match[1])
+
+  const length = parseHtml(htmlStr).map(transformData).length
+  return { page, count: (page - 1) * 10 + length }
+}

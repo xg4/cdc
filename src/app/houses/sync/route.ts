@@ -1,5 +1,6 @@
 import { saveHouse } from '@/server/services'
-import { pull } from '@/utils/spider'
+import { prisma } from '@/server/utils/prisma'
+import { getPageDetail, pull } from '@/utils/spider'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -7,9 +8,17 @@ const jsonDataSchema = z.object({
   page: z.number().int(),
 })
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
-    const { page } = await request.json().then(jsonDataSchema.parse)
+    const detail = await getPageDetail()
+    const dbCount = await prisma.house.count()
+    const diff = detail.count - dbCount
+    if (diff <= 0) {
+      return NextResponse.json('ok', {
+        status: 200,
+      })
+    }
+    const page = Math.ceil(diff / 10)
     const houses = await pull(page)
     for (const h of houses) {
       await saveHouse(h)
