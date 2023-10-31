@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/houses/sync",
-      "schedule": "0 */12 * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }
