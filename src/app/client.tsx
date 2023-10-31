@@ -4,23 +4,10 @@ import ChartCard from '@/components/ChartCard'
 import DiffCard from '@/components/DiffCard'
 import TableCard from '@/components/TableCard'
 import useHouse from '@/hooks/useHouse'
-import { getLatestHouses } from '@/services'
 import { House } from '@prisma/client'
-import { useQuery } from '@tanstack/react-query'
 import { Col, Row } from 'antd'
-import { uniqBy } from 'lodash'
-import { useMemo } from 'react'
 
 export default function Client({ houses }: { houses: House[] }) {
-  const { data: latestHouses } = useQuery(['getLatestHouses'], getLatestHouses)
-
-  const dataSource = useMemo(() => {
-    if (!latestHouses || !latestHouses.length) {
-      return houses
-    }
-    return uniqBy([...latestHouses, ...houses], 'uuid')
-  }, [houses, latestHouses])
-
   const {
     currentMonthData,
     currentQuarterData,
@@ -30,7 +17,7 @@ export default function Client({ houses }: { houses: House[] }) {
     prevWeekData,
     monthOfData,
     regionOfData,
-  } = useHouse(dataSource)
+  } = useHouse(houses)
 
   const diffList = [
     {
@@ -53,7 +40,7 @@ export default function Client({ houses }: { houses: House[] }) {
     },
     {
       title: '总量',
-      currentData: dataSource,
+      currentData: houses,
       prevData: [],
     },
   ]
@@ -72,7 +59,7 @@ export default function Client({ houses }: { houses: House[] }) {
 
       <ChartCard monthOfData={monthOfData} regionOfData={regionOfData} />
 
-      <TableCard houses={dataSource} />
+      <TableCard houses={houses} />
     </>
   )
 }

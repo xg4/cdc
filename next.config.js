@@ -1,8 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  env: {
-    buildDate: new Date().toISOString(),
-  },
-}
+const nextConfig = {}
 
 module.exports = nextConfig
