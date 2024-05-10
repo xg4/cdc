@@ -1,4 +1,4 @@
-import { House } from '@prisma/client'
+import { House } from '@/services'
 import dayjs from 'dayjs'
 import { groupBy } from 'lodash'
 import { useMemo } from 'react'

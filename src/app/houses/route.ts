@@ -1,7 +1,6 @@
-import { getHouses } from '@/server/services'
+import { getHouses } from '@/services'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  const houses = await getHouses()
-  return NextResponse.json(houses)
+  return NextResponse.json(getHouses())
 }

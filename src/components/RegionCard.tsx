@@ -1,6 +1,6 @@
 'use client'
 
-import { House } from '@prisma/client'
+import { House } from '@/services'
 import { Card } from 'antd'
 import { Chart, DonutChart, Interaction, Interval, Line, Point, Tooltip } from 'bizcharts'
 import dayjs from 'dayjs'

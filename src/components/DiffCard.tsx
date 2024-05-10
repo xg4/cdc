@@ -1,6 +1,6 @@
 'use client'
 
-import { House } from '@prisma/client'
+import { House } from '@/services'
 import { Card } from 'antd'
 import { sumBy, uniqBy } from 'lodash'
 

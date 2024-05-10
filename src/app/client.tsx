@@ -4,7 +4,7 @@ import ChartCard from '@/components/ChartCard'
 import DiffCard from '@/components/DiffCard'
 import TableCard from '@/components/TableCard'
 import useHouse from '@/hooks/useHouse'
-import { House } from '@prisma/client'
+import { House } from '@/services'
 import { Col, Row } from 'antd'
 
 export default function Client({ houses }: { houses: House[] }) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { House } from '@prisma/client'
+import { House } from '@/services'
 import { Card, Divider } from 'antd'
 import { Dictionary } from 'lodash'
 import { useState } from 'react'

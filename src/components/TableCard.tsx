@@ -1,6 +1,6 @@
 'use client'
 
-import { House } from '@prisma/client'
+import { House } from '@/services'
 import { Button, Card, DatePicker, Divider, Form, Input, Table } from 'antd'
 import dayjs from 'dayjs'
 import { uniqBy } from 'lodash'
@@ -93,16 +93,6 @@ export default function TableCard({ houses, className }: TableCardProps) {
         sorter(a: any, b: any) {
           return dayjs(a.endAt).diff(b.endAt)
         },
-      },
-      {
-        title: '报名状态',
-        dataIndex: 'status',
-        filters: uniqBy(dataSource, 'status').map(item => ({
-          text: item.status,
-          value: item.status,
-        })),
-        onFilter: (value: any, record: any) => record.status.includes(value),
-        filterSearch: true,
       },
     ],
     [dataSource],

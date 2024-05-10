@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/houses/sync",
-      "schedule": "0 0 * * *"
-    }
-  ]
-}

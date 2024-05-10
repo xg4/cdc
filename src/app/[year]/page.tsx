@@ -1,6 +1,5 @@
-import { getHousesByYear } from '@/server/services'
+import { getHousesByYear, yearParamsSchema } from '@/services'
 import { HOUSE_YEARS } from '../../constants'
-import { yearParamsSchema } from '../houses/[year]/schema'
 import Client from './client'
 
 export async function generateStaticParams() {
@@ -15,7 +14,7 @@ export async function generateMetadata({ params }: { params: { year: string } })
 
 export default async function Page({ params }: { params: { year: string } }) {
   const { year } = yearParamsSchema.parse(params)
-  const houses = await getHousesByYear(year)
+  const houses = getHousesByYear(year)
 
   return <Client houses={houses} />
 }

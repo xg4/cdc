@@ -1,6 +1,6 @@
 'use client'
 
-import { House } from '@prisma/client'
+import { House } from '@/services'
 import { Chart, LineAdvance } from 'bizcharts'
 import { Dictionary, orderBy, sumBy, unionBy } from 'lodash'
 import Rank from './Rank'

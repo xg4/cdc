@@ -1,4 +1,1 @@
-import dayjs from 'dayjs'
-import { range } from 'lodash'
-
-export const HOUSE_YEARS = range(dayjs().year(), 2016)
+export const HOUSE_YEARS = [2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017]

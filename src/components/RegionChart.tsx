@@ -1,6 +1,6 @@
 'use client'
 
-import { House } from '@prisma/client'
+import { House } from '@/services'
 import { Chart, Interaction, Interval, Tooltip } from 'bizcharts'
 import { Dictionary, orderBy, sumBy, uniqBy } from 'lodash'
 
