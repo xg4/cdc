@@ -1,5 +1,6 @@
 'use client'
 
+import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import dayjs from 'dayjs'
@@ -14,5 +15,9 @@ const plugins = [quarterOfYear, weekOfYear, weekYear]
 plugins.forEach(plugin => dayjs.extend(plugin))
 
 export default function Providers({ children }: PropsWithChildren) {
-  return <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
+  return (
+    <AntdRegistry>
+      <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
+    </AntdRegistry>
+  )
 }

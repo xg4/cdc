@@ -1,12 +1,9 @@
 'use client'
 
 import { HOUSE_YEARS } from '@/constants'
-import { GithubOutlined } from '@ant-design/icons'
-import { Button } from 'antd'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import pkg from '../../package.json'
 
 export default function Nav() {
   const links = [{ name: '首页', href: '/' }].concat(
@@ -36,13 +33,6 @@ export default function Nav() {
             )
           })}
         </ul>
-
-        <Button
-          href={pkg.homepage}
-          target="_blank"
-          type="link"
-          icon={<GithubOutlined className="text-xl text-gray-700" />}
-        ></Button>
       </div>
     </nav>
   )

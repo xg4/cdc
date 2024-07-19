@@ -2,7 +2,7 @@
 
 import { House } from '@/services'
 import { Button, Card, DatePicker, Divider, Form, Input, Table } from 'antd'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { uniqBy } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -19,7 +19,7 @@ function FilterForm({ onFilter }: { onFilter: (values: any) => void }) {
         <Input placeholder="请输入项目名称" />
       </Form.Item>
       <Form.Item label="登记时间" name="date">
-        <DatePicker.RangePicker showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
+        <DatePicker.RangePicker format="YYYY-MM-DD" />
       </Form.Item>
       <Form.Item>
         <Button htmlType="submit" type="primary">
@@ -45,8 +45,10 @@ export default function TableCard({ houses, className }: TableCardProps) {
       draft = draft.filter(house => house.name.includes(name))
     }
     if (date) {
-      const [startAt, endAt] = date
-      draft = draft.filter(house => startAt.diff(house.startAt) <= 0 && endAt.diff(house.endAt) >= 0)
+      const [startAt, endAt] = date as Dayjs[]
+      draft = draft.filter(
+        house => startAt.startOf('day').diff(house.startAt) <= 0 && endAt.endOf('day').diff(house.endAt) >= 0,
+      )
     }
     setDataSource(draft)
   }

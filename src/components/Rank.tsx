@@ -48,7 +48,7 @@ export default function Rank({ dataSource, className, title }: RankProps) {
         <List.Item>
           <List.Item.Meta
             avatar={
-              <Avatar className={classNames({ 'bg-blue-500': index < 3 })} size="small">
+              <Avatar className={classNames({ '!bg-blue-500': index < 3 })} size="small">
                 {index + 1}
               </Avatar>
             }
